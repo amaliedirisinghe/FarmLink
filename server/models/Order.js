@@ -25,10 +25,10 @@ const orderSchema = new mongoose.Schema(
 
         // Quantity purchased
         quantity: {
-            type: Number,
-            required: true,
-            min: 1
-        },
+        type: Number,
+        required: true,
+        min: 0.000001
+},
 
         // Product price at the time of purchase
         pricePerUnit: {

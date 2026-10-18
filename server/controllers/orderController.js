@@ -17,11 +17,11 @@ const createOrder = async (req, res) => {
         }
 
         // 2. Validate quantity
-        const requestedQuantity = Number(quantity);
+       const requestedQuantity = Number(quantity);
 
-        if (!Number.isInteger(requestedQuantity) || requestedQuantity <= 0) {
+        if (!Number.isFinite(requestedQuantity) || requestedQuantity <= 0) {
             return res.status(400).json({
-                message: "Quantity must be a positive whole number"
+                message: "Quantity must be a positive number"
             });
         }
 

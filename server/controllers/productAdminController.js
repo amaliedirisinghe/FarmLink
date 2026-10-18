@@ -95,10 +95,58 @@ const approveProduct = async (req, res) => {
 };
 
 
+
+
+// ==============================
+// Reject Product
+// ==============================
+const rejectProduct = async (req, res) => {
+    try {
+        const { productId } = req.params;
+
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+
+        // Only pending products can be rejected
+        if (product.status !== "pending") {
+            return res.status(400).json({
+                message: "Only pending products can be rejected"
+            });
+        }
+
+        product.status = "rejected";
+        await product.save();
+
+        return res.status(200).json({
+            message: "Product rejected successfully",
+            product: {
+                id: product._id,
+                name: product.name,
+                status: product.status
+            }
+        });
+    } catch (error) {
+        console.error("Reject product error:", error);
+
+        return res.status(500).json({
+            message: "Server error while rejecting product"
+        });
+    }
+};
+
+
+
+
 // ==============================
 // Export Controllers
 // ==============================
 export {
     getPendingProducts,
-    approveProduct
+    approveProduct,
+    rejectProduct
 };

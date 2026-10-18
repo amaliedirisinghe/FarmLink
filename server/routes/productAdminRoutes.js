@@ -2,7 +2,8 @@ import express from "express";
 
 import {
     getPendingProducts,
-    approveProduct
+    approveProduct,
+    rejectProduct
 } from "../controllers/productAdminController.js";
 
 import protect from "../middleware/authMiddleware.js";
@@ -24,6 +25,14 @@ router.patch(
     protect,
     adminOnly,
     approveProduct
+);
+
+// Reject a pending product
+router.patch(
+    "/:productId/reject",
+    protect,
+    adminOnly,
+    rejectProduct
 );
 
 export default router;

@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
@@ -31,7 +32,15 @@ const userSchema = new mongoose.Schema(
             type: String,
             enum: ["pending", "active", "rejected"],
             default: "pending"
-        }
+        },
+
+        // Products saved by this user
+        favorites: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product"
+            }
+        ]
     },
     {
         timestamps: true
