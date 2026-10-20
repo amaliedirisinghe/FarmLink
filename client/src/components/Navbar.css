@@ -1,0 +1,620 @@
+
+
+
+/* =========================================
+   FARMLINK NAVBAR — DESIGN TOKENS
+   These values define the navbar's theme.
+   ========================================= */
+
+:root {
+    --fl-green-900: #173d2a;
+    --fl-green-800: #205536;
+    --fl-green-700: #2d7046;
+    --fl-green-600: #3b8656;
+    --fl-green-100: #e9f2e8;
+    --fl-green-50: #f5f8f2;
+
+    --fl-cream: #fbfaf5;
+    --fl-white: #ffffff;
+    --fl-text: #26372c;
+    --fl-muted: #718074;
+    --fl-border: #e6ece4;
+
+    --fl-shadow:
+        0 8px 30px rgba(23, 61, 42, 0.07);
+
+    --fl-transition:
+        220ms ease;
+}
+
+/* =========================================
+   HEADER
+   Creates a clean, premium header.
+   ========================================= */
+
+.fl-header {
+    position: sticky;      
+    top: 0;               
+    z-index: 1000;
+    width: 100%;
+    background: var(--fl-white); 
+}
+
+/* Main navbar container */
+
+.fl-navbar {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.97);
+    border-bottom: 1px solid var(--fl-border);
+    box-shadow: var(--fl-shadow);
+}
+
+.fl-navbar-container {
+    width: min(100% - 64px, 1440px);
+    min-height: 72px; /* Previously 88px */
+    margin-inline: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+}
+
+/* =========================================
+   BRAND / LOGO
+   ========================================= */
+
+.fl-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+    flex-shrink: 0;
+
+    color: var(--fl-green-900);
+    text-decoration: none;
+
+    transition:
+        transform var(--fl-transition),
+        color var(--fl-transition);
+}
+
+.fl-brand:hover {
+    color: var(--fl-green-700);
+    transform: translateY(-1px);
+}
+
+.fl-brand-icon {
+    width: 32px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+
+    color: var(--fl-white);
+    background: linear-gradient(
+        145deg,
+        var(--fl-green-600),
+        var(--fl-green-900)
+    );
+
+    border-radius: 10px;
+    box-shadow: 0 5px 12px rgba(32, 85, 54, 0.2);
+
+    transition:
+        transform 300ms ease,
+        border-radius 300ms ease,
+        box-shadow 300ms ease;
+}
+
+.fl-brand-icon svg {
+    width: 27px;
+    height: 27px;
+}
+
+.fl-brand:hover .fl-brand-icon {
+    transform: rotate(-5deg) scale(1.05);
+    border-radius: 5px;
+    box-shadow: 0 7px 17px rgba(32, 85, 54, 0.25);
+}
+
+.fl-brand-text {
+    display: flex;
+    flex-direction: column;
+
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.01;
+    letter-spacing: -1px;
+}
+
+.fl-brand-text > span {
+    display: inline;
+    color: var(--fl-green-600);
+}
+
+.fl-brand-text small {
+    color: var(--fl-muted);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2.1px;
+    line-height: 1.2;
+}
+
+/* =========================================
+   NAVIGATION LAYOUT
+   ========================================= */
+
+.fl-navigation-content {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.fl-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+/* Individual navigation links */
+
+.fl-nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    padding: 12px 11px;
+    border-radius: 8px;
+
+    color: #536258;
+    background: transparent;
+
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        color var(--fl-transition),
+        background var(--fl-transition);
+}
+
+/* Subtle background when hovering over a link */
+
+.fl-nav-link:hover {
+    color: var(--fl-green-800);
+    background: var(--fl-green-50);
+}
+
+/* Animated underline */
+
+.fl-nav-link::after {
+    content: "";
+    position: absolute;
+    right: 11px;
+    bottom: 5px;
+    left: 11px;
+
+    height: 2px;
+    border-radius: 10px;
+
+    background: var(--fl-green-600);
+
+    transform: scaleX(0);
+    transform-origin: left;
+
+    transition: transform 240ms ease;
+}
+
+.fl-nav-link:hover::after,
+.fl-nav-link-active::after {
+    transform: scaleX(1);
+}
+
+/* Highlight the active page */
+
+.fl-nav-link-active {
+    color: var(--fl-green-800);
+    background: var(--fl-green-50);
+}
+
+/* =========================================
+   ACCOUNT ACTIONS
+   ========================================= */
+
+.fl-nav-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* Shared button styling */
+
+.fl-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-height: 42px;
+    padding: 10px 17px;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+
+    transition:
+        transform var(--fl-transition),
+        color var(--fl-transition),
+        background var(--fl-transition),
+        border-color var(--fl-transition),
+        box-shadow var(--fl-transition);
+}
+
+.fl-btn:focus-visible,
+.fl-nav-link:focus-visible,
+.fl-brand:focus-visible,
+.fl-menu-toggle:focus-visible {
+    outline: 3px solid rgba(59, 134, 86, 0.35);
+    outline-offset: 3px;
+}
+
+/* Login: quiet outlined button */
+
+.fl-btn-login {
+    color: var(--fl-green-800);
+    background: var(--fl-white);
+    border-color: #d8e4d8;
+}
+
+.fl-btn-login:hover {
+    color: var(--fl-green-900);
+    background: var(--fl-green-50);
+    border-color: var(--fl-green-600);
+    transform: translateY(-2px);
+}
+
+/* Register: primary green button */
+
+.fl-btn-register {
+    color: var(--fl-white);
+    background: linear-gradient(
+        135deg,
+        var(--fl-green-700),
+        var(--fl-green-900)
+    );
+
+    box-shadow: 0 4px 10px rgba(32, 85, 54, 0.14);
+}
+
+.fl-btn-register:hover {
+    color: var(--fl-white);
+    box-shadow: 0 7px 16px rgba(32, 85, 54, 0.22);
+    transform: translateY(-2px);
+}
+
+.fl-btn-register span,
+.fl-btn-logout span {
+    transition: transform var(--fl-transition);
+}
+
+.fl-btn-register:hover span,
+.fl-btn-logout:hover span {
+    transform: translate(2px, -2px);
+}
+
+/* Logout button */
+
+.fl-btn-logout {
+    color: var(--fl-green-800);
+    background: var(--fl-green-50);
+    border-color: #dce8db;
+}
+
+.fl-btn-logout:hover {
+    color: var(--fl-white);
+    background: var(--fl-green-800);
+    border-color: var(--fl-green-800);
+    transform: translateY(-1px);
+}
+
+/* =========================================
+   USER GREETING
+   ========================================= */
+
+.fl-user-greeting {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-right: 5px;
+}
+
+.fl-user-avatar {
+    width: 37px;
+    height: 37px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    color: var(--fl-green-800);
+    background: var(--fl-green-100);
+    border: 1px solid #d5e5d4;
+    border-radius: 50%;
+
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.fl-user-greeting > span:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.fl-user-greeting small {
+    color: var(--fl-muted);
+    font-size: 10px;
+    line-height: 1.1;
+}
+
+.fl-user-greeting strong {
+    max-width: 115px;
+    overflow: hidden;
+
+    color: var(--fl-text);
+    font-size: 12px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* =========================================
+   MOBILE MENU BUTTON
+   Hidden on desktop.
+   ========================================= */
+
+.fl-menu-toggle {
+    display: none;
+
+    width: 44px;
+    height: 44px;
+    padding: 11px;
+
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+
+    color: var(--fl-green-900);
+    background: var(--fl-green-50);
+    border: 1px solid var(--fl-border);
+    border-radius: 12px;
+
+    cursor: pointer;
+}
+
+.fl-menu-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+
+    background: currentColor;
+    border-radius: 4px;
+
+    transition:
+        transform 220ms ease,
+        opacity 180ms ease;
+}
+
+/* Animate the three lines into a close icon */
+
+.fl-menu-toggle-open span:first-child {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.fl-menu-toggle-open span:nth-child(2) {
+    opacity: 0;
+}
+
+.fl-menu-toggle-open span:last-child {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+/* =========================================
+   TABLET AND MOBILE RESPONSIVENESS
+   ========================================= */
+
+@media (max-width: 1200px) {
+    .fl-navbar-container {
+        width: min(100% - 36px, 1440px);
+        gap: 16px;
+    }
+
+    .fl-navigation-content {
+        gap: 12px;
+    }
+
+    .fl-nav-link {
+        padding-inline: 8px;
+        font-size: 12px;
+    }
+
+    .fl-btn {
+        padding-inline: 12px;
+    }
+
+    .fl-user-greeting {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .fl-navbar-container {
+        position: relative;
+        min-height: 76px;
+        flex-wrap: wrap;
+        gap: 0;
+    }
+
+    .fl-brand-text {
+        font-size: 23px;
+    }
+
+    .fl-menu-toggle {
+        display: flex;
+        flex-shrink: 0;
+    }
+
+    /* The mobile panel is collapsed by default. */
+
+    .fl-navigation-content {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+
+        width: 100%;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+
+        border-top: 0 solid transparent;
+
+        transition:
+            max-height 380ms ease,
+            opacity 220ms ease,
+            visibility 220ms ease,
+            padding 300ms ease,
+            border-color 220ms ease;
+    }
+
+    /* React adds this class when the menu button is clicked. */
+
+    .fl-navigation-content-open {
+        max-height: 75vh;
+        overflow-y: auto;
+        opacity: 1;
+        visibility: visible;
+
+        padding: 16px 0 20px;
+        border-top: 1px solid var(--fl-border);
+    }
+
+    .fl-nav-links {
+        width: 100%;
+        align-items: stretch;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .fl-nav-link {
+        width: 100%;
+        box-sizing: border-box;
+
+        padding: 13px 14px;
+        font-size: 14px;
+        white-space: normal;
+    }
+
+    .fl-nav-link::after {
+        right: auto;
+        bottom: 7px;
+        left: 14px;
+        width: 26px;
+    }
+
+    .fl-nav-actions {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        padding-top: 5px;
+    }
+
+    .fl-user-greeting {
+        display: flex;
+    }
+}
+
+/* Smaller phones */
+
+@media (max-width: 480px) {
+    .fl-navbar-container {
+        width: calc(100% - 28px);
+        min-height: 72px;
+    }
+
+    .fl-brand-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+    }
+
+    .fl-brand-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .fl-brand-text {
+        font-size: 21px;
+    }
+
+    .fl-brand-text small {
+        font-size: 7px;
+        letter-spacing: 1.7px;
+    }
+
+    .fl-menu-toggle {
+        width: 42px;
+        height: 42px;
+    }
+
+    .fl-nav-actions {
+        gap: 8px;
+    }
+
+    .fl-btn {
+        min-height: 41px;
+        padding: 10px 13px;
+    }
+
+    .fl-user-greeting strong {
+        max-width: 145px;
+    }
+}
+
+/* =========================================
+   ACCESSIBILITY
+   Respect reduced-motion preferences.
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .fl-brand,
+    .fl-brand-icon,
+    .fl-nav-link,
+    .fl-nav-link::after,
+    .fl-btn,
+    .fl-btn-register span,
+    .fl-btn-logout span,
+    .fl-menu-toggle span,
+    .fl-navigation-content {
+        transition: none !important;
+        animation: none !important;
+    }
+}
