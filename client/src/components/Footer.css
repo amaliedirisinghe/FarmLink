@@ -1,0 +1,383 @@
+/* ==============================
+   FarmLink Footer — Base
+============================== */
+.farmlink-footer {
+    --footer-green: #214b31;
+    --footer-light: #e9efe4;
+    --footer-muted: #c1d0c0;
+
+    position: relative;
+    width: 100%;
+    margin-top: auto;
+    padding: 42px clamp(22px, 5vw, 72px) 0;
+    overflow: hidden;
+    isolation: isolate;
+    border-radius: 24px 24px 0 0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(15, 43, 26, 0.91),
+            rgba(25, 58, 37, 0.84)
+        ),
+        url("/images/Farmer_hero.jpg") center 48% / cover no-repeat;
+    border-top: 1px solid rgba(233, 239, 228, 0.14);
+    color: var(--footer-light);
+}
+
+/* Subtle green glow */
+.farmlink-footer::before {
+    position: absolute;
+    z-index: -1;
+    top: -100px;
+    left: 15%;
+    width: 300px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(132, 170, 111, 0.12);
+    content: "";
+    filter: blur(65px);
+    pointer-events: none;
+}
+
+/* ==============================
+   Main Footer Layout
+============================== */
+.footer-container {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.25fr)
+        minmax(120px, 0.65fr)
+        minmax(230px, 1fr);
+    gap: clamp(28px, 5vw, 70px);
+    max-width: 1320px;
+    margin: 0 auto;
+    padding-bottom: 32px;
+}
+
+/* ==============================
+   Brand
+============================== */
+.footer-brand {
+    max-width: 350px;
+}
+
+.footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: #f8f7f0;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    transition: opacity 200ms ease;
+}
+
+.footer-logo:hover {
+    opacity: 0.85;
+}
+
+.footer-logo-icon {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 1px solid rgba(233, 239, 228, 0.2);
+    border-radius: 13px;
+    background: rgba(233, 239, 228, 0.1);
+    font-size: 22px;
+}
+
+.footer-tagline {
+    margin: 14px 0 8px;
+    color: #e0ebd9;
+    font-size: 14px;
+    font-weight: 650;
+}
+
+.footer-description {
+    max-width: 320px;
+    margin: 0;
+    color: var(--footer-muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+/* ==============================
+   Explore Links
+============================== */
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-links h3,
+.footer-contact h3 {
+    margin: 5px 0 16px;
+    color: #f8f7f0;
+    font-size: 14px;
+    font-weight: 750;
+}
+
+.footer-links a {
+    margin-bottom: 12px;
+    color: var(--footer-muted);
+    font-size: 13px;
+    transition: color 200ms ease, transform 200ms ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+    transform: translateX(3px);
+}
+
+/* ==============================
+   Contact Details
+============================== */
+.footer-contact > p {
+    max-width: 340px;
+    margin: 0 0 15px;
+    color: var(--footer-muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 10px;
+    color: var(--footer-muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+    transition: color 200ms ease;
+}
+
+.footer-contact-item:hover {
+    color: #fff;
+}
+
+.footer-contact-icon {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    place-items: center;
+    border: 1px solid rgba(233, 239, 228, 0.16);
+    border-radius: 10px;
+    background: rgba(233, 239, 228, 0.08);
+    font-size: 15px;
+}
+
+/* ==============================
+   Bottom Bar
+============================== */
+.footer-bottom {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 20px;
+    max-width: 1320px;
+    min-height: 70px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(233, 239, 228, 0.17);
+}
+
+.footer-copyright,
+.footer-bottom-note {
+    margin: 0;
+    color: #c4d0c2;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.footer-copyright {
+    text-align: center;
+}
+
+.footer-bottom-note {
+    text-align: right;
+}
+
+/* ==============================
+   Social Media — Inline Layout
+============================== */
+.footer-socials {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 9px;
+    min-width: 0;
+}
+
+/* "FOLLOW FARMLINK" sits beside the icons */
+.footer-socials::before {
+    content: "FOLLOW US ON : ";
+    margin-right: 5px;
+    color: #d5e0d0;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.1px;
+    white-space: nowrap;
+}
+
+.footer-social-link {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(233, 239, 228, 0.2);
+    border-radius: 10px;
+    background: rgba(233, 239, 228, 0.07);
+    color: #e9efe4;
+    transition:
+        background 200ms ease,
+        border-color 200ms ease,
+        color 200ms ease,
+        transform 200ms ease;
+}
+
+.footer-social-link svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+}
+
+.footer-social-link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(233, 239, 228, 0.45);
+    background: rgba(233, 239, 228, 0.17);
+    color: #fff;
+}
+
+/* ==============================
+   Tablet
+============================== */
+@media (max-width: 850px) {
+    .farmlink-footer {
+        padding-top: 36px;
+    }
+
+    .footer-container {
+        grid-template-columns: minmax(0, 1fr) minmax(120px, 0.7fr);
+        gap: 30px;
+    }
+
+    .footer-brand {
+        max-width: 420px;
+    }
+
+    .footer-contact {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        grid-template-columns: 1fr auto;
+        gap: 14px;
+        padding: 14px 0;
+    }
+
+    .footer-socials {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+
+    .footer-copyright {
+        grid-column: 1;
+        grid-row: 2;
+        text-align: left;
+    }
+
+    .footer-bottom-note {
+        grid-column: 2;
+        grid-row: 2;
+    }
+}
+
+/* ==============================
+   Mobile
+============================== */
+@media (max-width: 540px) {
+    .farmlink-footer {
+        padding: 30px 20px 0;
+        border-radius: 18px 18px 0 0;
+        background-position: center;
+    }
+
+    .footer-container {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 26px;
+        padding-bottom: 26px;
+    }
+
+    .footer-brand {
+        max-width: 100%;
+    }
+
+    .footer-logo {
+        font-size: 24px;
+    }
+
+    .footer-links h3,
+    .footer-contact h3 {
+        margin-bottom: 13px;
+    }
+
+    .footer-contact {
+        grid-column: auto;
+    }
+
+    .footer-bottom {
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 13px;
+        padding: 18px 0;
+    }
+
+    .footer-socials {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .footer-socials::before {
+        margin-right: 3px;
+        font-size: 9px;
+        letter-spacing: 0.8px;
+    }
+
+    .footer-social-link {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+        border-radius: 9px;
+    }
+
+    .footer-social-link svg {
+        width: 15px;
+        height: 15px;
+    }
+
+    .footer-copyright,
+    .footer-bottom-note {
+        text-align: left;
+        font-size: 10px;
+    }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .footer-logo,
+    .footer-links a,
+    .footer-contact-item,
+    .footer-social-link {
+        transition: none;
+    }
+}

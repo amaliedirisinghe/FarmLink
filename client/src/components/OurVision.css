@@ -1,0 +1,373 @@
+
+.our-vision {
+    position: relative;
+    isolation: isolate;
+    width: min(100% - 48px, 1440px);
+    margin: 0 auto;
+    padding: 100px 36px;
+    border-radius: 28px;
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(18, 45, 29, 0.92),
+            rgba(18, 45, 29, 0.72)
+        ),
+        url("/images/vision-farm.jpg") center / cover no-repeat;
+}
+
+/* Introductory text */
+.vision-intro {
+    max-width: 760px;
+    margin-bottom: 42px;
+}
+
+.vision-eyebrow {
+    display: inline-block;
+    margin-bottom: 16px;
+    color: #477b50;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+}
+
+.vision-intro h2 {
+    margin: 0;
+    color: #203c2b;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1.8px;
+}
+
+.vision-intro h2 span {
+    color: #477b50;
+}
+
+.vision-description {
+    max-width: 660px;
+    margin: 18px 0 0;
+    color: #69766c;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* Four value cards */
+.vision-values-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.vision-card {
+    position: relative;
+    min-height: 245px;
+    padding: 28px 24px;
+    overflow: hidden;
+    border: 1px solid #e2e9df;
+    border-radius: 22px;
+    transition:
+        transform 220ms ease,
+        box-shadow 220ms ease;
+    animation: vision-card-enter 550ms ease both;
+    animation-delay: calc(var(--card-index, 0) * 100ms);
+}
+
+.vision-card-sage {
+    background: #edf3e9;
+}
+
+.vision-card-cream {
+    background: #f7f1e5;
+}
+
+.vision-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 35px rgba(36, 66, 43, 0.09);
+}
+
+.vision-card-icon {
+    display: grid;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 25px;
+    place-items: center;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.75);
+    font-size: 25px;
+}
+
+.vision-card h3 {
+    margin: 0 0 10px;
+    color: #203c2b;
+    font-size: 18px;
+    font-weight: 750;
+    line-height: 1.4;
+}
+
+.vision-card p {
+    margin: 0;
+    color: #69766c;
+    font-size: 14px;
+    line-height: 1.75;
+}
+
+.vision-card-number {
+    position: absolute;
+    right: 18px;
+    bottom: 8px;
+    color: rgba(38, 75, 47, 0.08);
+    font-size: 58px;
+    font-weight: 900;
+    line-height: 1;
+    pointer-events: none;
+}
+
+@keyframes vision-card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+    .vision-values-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .vision-card {
+        min-height: 220px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .our-vision {
+        width: calc(100% - 36px);
+        padding: 64px 0;
+    }
+
+    .vision-intro {
+        margin-bottom: 28px;
+    }
+
+    .vision-intro h2 {
+        letter-spacing: -1px;
+    }
+
+    .vision-description {
+        font-size: 15px;
+    }
+
+    .vision-values-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .vision-card {
+        min-height: auto;
+        padding: 24px;
+    }
+
+    .vision-card-icon {
+        margin-bottom: 18px;
+    }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .vision-card {
+        animation: none;
+        transition: none;
+    }
+
+    .vision-card:hover {
+        transform: none;
+    }
+}
+
+/* Improve text contrast over the farm photograph */
+.our-vision .vision-eyebrow {
+    color: #d1e7b9;
+}
+
+.our-vision .vision-intro h2 {
+    color: #ffffff;
+}
+
+.our-vision .vision-intro h2 span {
+    color: #c3e3a9;
+}
+
+.our-vision .vision-description {
+    color: #edf3e9;
+}
+
+/* Keep the value cards readable */
+.our-vision .vision-card-sage {
+    background: rgba(237, 243, 233, 0.96);
+}
+
+.our-vision .vision-card-cream {
+    background: rgba(247, 241, 229, 0.96);
+}
+
+@media (max-width: 600px) {
+    .our-vision {
+        width: calc(100% - 24px);
+        padding: 56px 18px;
+        border-radius: 22px;
+    }
+}
+
+
+/* Smooth entrance for the vision heading */
+.vision-eyebrow {
+    animation: vision-fade-up 700ms ease both;
+}
+
+.vision-heading {
+    overflow: hidden;
+}
+
+.vision-heading-line {
+    display: block;
+}
+
+.vision-word {
+    display: inline-block;
+    opacity: 0;
+    animation: vision-word-enter 650ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(180ms + var(--word-index, 0) * 100ms);
+}
+
+.vision-heading-accent {
+    color: #c3e3a9;
+}
+
+.vision-reveal {
+    opacity: 0;
+    animation: vision-fade-up 800ms ease 650ms both;
+}
+
+/* Card entrance: one after another */
+.vision-card {
+    opacity: 0;
+    animation: vision-card-enter 750ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(650ms + var(--card-index, 0) * 160ms);
+    transform-origin: center bottom;
+    transition:
+        transform 300ms ease,
+        box-shadow 300ms ease,
+        border-color 300ms ease;
+}
+
+/* Interactive hover effect */
+.vision-card:hover {
+    transform: translateY(-9px);
+    box-shadow: 0 22px 42px rgba(8, 28, 15, 0.22);
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+.vision-card-icon {
+    transition:
+        transform 350ms ease,
+        background-color 350ms ease;
+}
+
+.vision-card:hover .vision-card-icon {
+    transform: translateY(-4px) rotate(-5deg) scale(1.08);
+    background-color: #ffffff;
+}
+
+.vision-card h3 {
+    transition: color 250ms ease;
+}
+
+.vision-card:hover h3 {
+    color: #397449;
+}
+
+/* Large background numbers respond subtly to hover */
+.vision-card-number {
+    transition:
+        transform 350ms ease,
+        color 350ms ease;
+}
+
+.vision-card:hover .vision-card-number {
+    transform: translateY(-5px);
+    color: rgba(38, 75, 47, 0.15);
+}
+
+/* Animation keyframes */
+@keyframes vision-word-enter {
+    from {
+        opacity: 0;
+        transform: translateY(35px);
+        filter: blur(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes vision-fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes vision-card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(32px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Accessibility: respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .vision-eyebrow,
+    .vision-word,
+    .vision-reveal,
+    .vision-card {
+        opacity: 1;
+        animation: none;
+        filter: none;
+        transform: none;
+    }
+
+    .vision-card,
+    .vision-card-icon,
+    .vision-card-number,
+    .vision-card h3 {
+        transition: none;
+    }
+
+    .vision-card:hover,
+    .vision-card:hover .vision-card-icon,
+    .vision-card:hover .vision-card-number {
+        transform: none;
+    }
+}

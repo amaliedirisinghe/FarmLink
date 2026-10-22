@@ -1,4 +1,3 @@
-
 import {
     BrowserRouter,
     Routes,
@@ -6,8 +5,11 @@ import {
 } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import MyOrders from "./pages/MyOrders";
@@ -16,31 +18,12 @@ import MyProducts from "./pages/MyProducts";
 import AddProduct from "./pages/AddProduct";
 import ManageProduct from "./pages/ManageProduct";
 import MyFavorites from "./pages/MyFavorites";
+
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers.jsx";
 import AdminProducts from "./pages/AdminProducts.jsx";
 import AdminOrders from "./pages/AdminOrders.jsx";
 
-// ==============================
-// Home Page
-// ==============================
-function Home() {
-    return (
-        <div className="container py-5 text-center">
-            <h1 className="text-success">
-                FarmLink
-            </h1>
-
-            <p className="lead">
-                Agricultural Marketplace Platform
-            </p>
-        </div>
-    );
-}
-
-// ==============================
-// Main App
-// ==============================
 function App() {
     return (
         <BrowserRouter>
@@ -55,32 +38,27 @@ function App() {
                     element={<Home />}
                 />
 
-                {/* Login */}
+                {/* Authentication */}
                 <Route
                     path="/login"
                     element={<Login />}
                 />
 
-
-                {/* Register */}
                 <Route
-                        path="/register"
-                        element={<Register />}
-                    />
+                    path="/register"
+                    element={<Register />}
+                />
 
-
-                 {/* Admin Dashboard */}
+                {/* Admin */}
                 <Route
                     path="/admin"
                     element={<AdminDashboard />}
                 />
 
-
                 <Route
                     path="/admin/users"
                     element={<AdminUsers />}
                 />
-
 
                 <Route
                     path="/admin/products"
@@ -92,20 +70,18 @@ function App() {
                     element={<AdminOrders />}
                 />
 
-
                 {/* Marketplace */}
                 <Route
                     path="/products"
                     element={<Products />}
                 />
 
-                {/* Product Details */}
                 <Route
                     path="/products/:productId"
                     element={<ProductDetails />}
                 />
 
-                {/* My Favourites */}
+                {/* Favorites */}
                 <Route
                     path="/my-favorites"
                     element={<MyFavorites />}
@@ -123,25 +99,25 @@ function App() {
                     element={<SellerOrders />}
                 />
 
-                {/* My Products */}
+                {/* Seller Products */}
                 <Route
                     path="/my-products"
                     element={<MyProducts />}
                 />
 
-                {/* Add Product */}
                 <Route
                     path="/add-product"
                     element={<AddProduct />}
                 />
 
-                {/* Manage Product */}
                 <Route
                     path="/manage-product/:productId"
                     element={<ManageProduct />}
                 />
-
             </Routes>
+
+            {/* Footer */}
+            <Footer />
         </BrowserRouter>
     );
 }

@@ -1,0 +1,36 @@
+
+/* FarmLink shared design tokens
+   Keep the application's common colors and styles here. */
+
+:root {
+    /* Brand colors */
+    --farmlink-green: #2d7046;
+    --farmlink-dark-green: #173d2a;
+    --farmlink-light-green: #e7f0e4;
+
+    /* Backgrounds */
+    --farmlink-background: #fbfaf5;
+    --farmlink-surface: #ffffff;
+    --farmlink-soft-background: #f3f6ef;
+
+    /* Text */
+    --farmlink-text: #26372c;
+    --farmlink-muted: #718074;
+
+    /* Borders and feedback */
+    --farmlink-border: #e2e8df;
+    --farmlink-success: #287a48;
+    --farmlink-danger: #c0392b;
+
+    /* Layout */
+    --farmlink-container-width: 1200px;
+
+    /* Rounded corners */
+    --farmlink-radius-sm: 8px;
+    --farmlink-radius-md: 14px;
+    --farmlink-radius-lg: 22px;
+
+    /* Shadows */
+    --farmlink-shadow-sm: 0 4px 14px rgb(23 61 42 / 6%);
+    --farmlink-shadow-md: 0 12px 32px rgb(23 61 42 / 10%);
+}

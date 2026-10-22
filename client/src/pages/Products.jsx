@@ -1,8 +1,8 @@
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./Products.css";
 
 const Products = () => {
     const { token } = useAuth();
@@ -22,7 +22,7 @@ const Products = () => {
     const [error, setError] = useState("");
     const [favoriteMessage, setFavoriteMessage] = useState("");
 
-    // Fetch marketplace products
+    // Load marketplace products using the existing API.
     const fetchProducts = async () => {
         try {
             setLoading(true);
@@ -30,28 +30,13 @@ const Products = () => {
 
             const params = {};
 
-            if (search.trim()) {
-                params.search = search.trim();
-            }
-
-            if (category) {
-                params.category = category;
-            }
-
-            if (minPrice !== "") {
-                params.minPrice = minPrice;
-            }
-
-            if (maxPrice !== "") {
-                params.maxPrice = maxPrice;
-            }
-
-            if (sort) {
-                params.sort = sort;
-            }
+            if (search.trim()) params.search = search.trim();
+            if (category) params.category = category;
+            if (minPrice !== "") params.minPrice = minPrice;
+            if (maxPrice !== "") params.maxPrice = maxPrice;
+            if (sort) params.sort = sort;
 
             const response = await api.get("/products", { params });
-
             setProducts(response.data.products || []);
         } catch (error) {
             setError(
@@ -63,7 +48,7 @@ const Products = () => {
         }
     };
 
-    // Fetch the logged-in user's favourites
+    // Load favourites for the logged-in user.
     const fetchFavorites = async () => {
         if (!token) {
             setFavoriteIds([]);
@@ -75,8 +60,8 @@ const Products = () => {
 
             const response = await api.get("/favorites", {
                 headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
             const ids = (response.data.favorites || [])
@@ -102,13 +87,13 @@ const Products = () => {
         fetchFavorites();
     }, [token]);
 
-    // Search products
+    // Search products.
     const handleSearch = (event) => {
         event.preventDefault();
         fetchProducts();
     };
 
-    // Clear filters
+    // Reset all filters.
     const handleClearFilters = () => {
         setSearch("");
         setCategory("");
@@ -117,16 +102,16 @@ const Products = () => {
         setSort("newest");
     };
 
-    // Add or remove a favourite
+    // Add or remove a favourite through the existing API.
     const handleToggleFavorite = async (productId) => {
         if (!token) {
-            setFavoriteMessage("Please log in to save favourite products.");
+            setFavoriteMessage(
+                "Please log in to save favourite products."
+            );
             return;
         }
 
-        if (favoriteActionId) {
-            return;
-        }
+        if (favoriteActionId) return;
 
         const isFavorite = favoriteIds.includes(productId);
 
@@ -137,8 +122,8 @@ const Products = () => {
             if (isFavorite) {
                 await api.delete(`/favorites/${productId}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
 
                 setFavoriteIds((previousIds) =>
@@ -152,8 +137,8 @@ const Products = () => {
                     {},
                     {
                         headers: {
-                            Authorization: `Bearer ${token}`
-                        }
+                            Authorization: `Bearer ${token}`,
+                        },
                     }
                 );
 
@@ -176,39 +161,46 @@ const Products = () => {
     };
 
     return (
-        <div className="container py-5">
-            {/* Page Header */}
-            <div className="text-center mb-5">
-                <h1 className="text-success">
-                    Agricultural Marketplace
-                </h1>
+        <main className="products-page">
+            <div className="products-container">
+                {/* Marketplace heading */}
+                <header className="products-header">
+                    <span className="products-eyebrow">
+                        FRESH FROM LOCAL FARMS
+                    </span>
 
-                <p className="text-muted">
-                    Discover fresh produce directly from local sellers.
-                </p>
-            </div>
+                    <h1>
+                        Discover your next <br />
+                        <span>fresh pick.</span>
+                    </h1>
 
-            {/* Search and Filters */}
-            <div className="card shadow-sm mb-5">
-                <div className="card-body">
-                    <h5 className="mb-4">Find Products</h5>
+                    <p>
+                        Explore fresh agricultural produce and connect
+                        directly with local sellers.
+                    </p>
+                </header>
+
+                {/* Search and filters */}
+                <section
+                    className="products-filter-panel"
+                    aria-labelledby="products-filter-title"
+                >
+                    <h2
+                        className="products-filter-heading"
+                        id="products-filter-title"
+                    >
+                        Find your fresh produce
+                    </h2>
 
                     <form onSubmit={handleSearch}>
-                        <div className="row g-3">
-                            {/* Search */}
-                            <div className="col-md-6">
-                                <label
-                                    htmlFor="search"
-                                    className="form-label"
-                                >
-                                    Search
-                                </label>
-
+                        <div className="products-filter-grid">
+                            <div className="products-field products-search-field">
+                                <label htmlFor="search">Search products</label>
                                 <input
-                                    type="text"
                                     id="search"
                                     className="form-control"
-                                    placeholder="Search products..."
+                                    type="text"
+                                    placeholder="Try tomatoes, rice, fresh fruit..."
                                     value={search}
                                     onChange={(event) =>
                                         setSearch(event.target.value)
@@ -216,15 +208,8 @@ const Products = () => {
                                 />
                             </div>
 
-                            {/* Category */}
-                            <div className="col-md-6">
-                                <label
-                                    htmlFor="category"
-                                    className="form-label"
-                                >
-                                    Category
-                                </label>
-
+                            <div className="products-field">
+                                <label htmlFor="category">Category</label>
                                 <select
                                     id="category"
                                     className="form-select"
@@ -233,7 +218,7 @@ const Products = () => {
                                         setCategory(event.target.value)
                                     }
                                 >
-                                    <option value="">All Categories</option>
+                                    <option value="">All categories</option>
                                     <option value="Vegetables">Vegetables</option>
                                     <option value="Fruits">Fruits</option>
                                     <option value="Grains">Grains</option>
@@ -243,22 +228,15 @@ const Products = () => {
                                 </select>
                             </div>
 
-                            {/* Minimum Price */}
-                            <div className="col-md-4">
-                                <label
-                                    htmlFor="minPrice"
-                                    className="form-label"
-                                >
-                                    Minimum Price
-                                </label>
-
+                            <div className="products-field">
+                                <label htmlFor="minPrice">Minimum price (Rs.)</label>
                                 <input
-                                    type="number"
                                     id="minPrice"
                                     className="form-control"
-                                    placeholder="e.g. 100"
+                                    type="number"
                                     min="0"
                                     step="0.01"
+                                    placeholder="e.g. 100"
                                     value={minPrice}
                                     onChange={(event) =>
                                         setMinPrice(event.target.value)
@@ -266,22 +244,15 @@ const Products = () => {
                                 />
                             </div>
 
-                            {/* Maximum Price */}
-                            <div className="col-md-4">
-                                <label
-                                    htmlFor="maxPrice"
-                                    className="form-label"
-                                >
-                                    Maximum Price
-                                </label>
-
+                            <div className="products-field">
+                                <label htmlFor="maxPrice">Maximum price (Rs.)</label>
                                 <input
-                                    type="number"
                                     id="maxPrice"
                                     className="form-control"
-                                    placeholder="e.g. 1000"
+                                    type="number"
                                     min="0"
                                     step="0.01"
+                                    placeholder="e.g. 1000"
                                     value={maxPrice}
                                     onChange={(event) =>
                                         setMaxPrice(event.target.value)
@@ -289,15 +260,8 @@ const Products = () => {
                                 />
                             </div>
 
-                            {/* Sort */}
-                            <div className="col-md-4">
-                                <label
-                                    htmlFor="sort"
-                                    className="form-label"
-                                >
-                                    Sort By
-                                </label>
-
+                            <div className="products-field">
+                                <label htmlFor="sort">Sort products</label>
                                 <select
                                     id="sort"
                                     className="form-select"
@@ -306,200 +270,236 @@ const Products = () => {
                                         setSort(event.target.value)
                                     }
                                 >
-                                    <option value="newest">Newest</option>
-                                    <option value="oldest">Oldest</option>
+                                    <option value="newest">Newest first</option>
+                                    <option value="oldest">Oldest first</option>
                                     <option value="price_asc">
-                                        Price: Low to High
+                                        Price: low to high
                                     </option>
                                     <option value="price_desc">
-                                        Price: High to Low
+                                        Price: high to low
                                     </option>
                                 </select>
                             </div>
 
-                            {/* Buttons */}
-                            <div className="col-12 d-flex gap-2">
+                            <div className="products-filter-actions">
                                 <button
                                     type="submit"
-                                    className="btn btn-success"
+                                    className="products-btn products-btn-primary"
                                 >
-                                    Search
+                                    Search products <span aria-hidden="true">→</span>
                                 </button>
 
                                 <button
                                     type="button"
-                                    className="btn btn-outline-secondary"
+                                    className="products-btn products-btn-secondary"
                                     onClick={handleClearFilters}
                                 >
-                                    Clear Filters
+                                    Clear filters
                                 </button>
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
+                </section>
 
-            {/* Favourites Message */}
-            {favoriteMessage && (
-                <div
-                    className="alert alert-info alert-dismissible fade show"
-                    role="status"
-                >
-                    {favoriteMessage}
+                {/* Favourite feedback */}
+                {favoriteMessage && (
+                    <div className="products-feedback products-feedback-info" role="status">
+                        <span>{favoriteMessage}</span>
 
-                    {!token && (
-                        <>
-                            {" "}
+                        {!token && (
                             <Link to="/login">Log in</Link>
-                        </>
-                    )}
+                        )}
 
-                    <button
-                        type="button"
-                        className="btn-close"
-                        aria-label="Close"
-                        onClick={() => setFavoriteMessage("")}
-                    />
-                </div>
-            )}
-
-            {/* Product Error */}
-            {error && (
-                <div className="alert alert-danger">
-                    {error}
-                </div>
-            )}
-
-            {/* Loading */}
-            {loading ? (
-                <div className="text-center py-5">
-                    <div
-                        className="spinner-border text-success"
-                        role="status"
-                    >
-                        <span className="visually-hidden">
-                            Loading...
-                        </span>
+                        <button
+                            type="button"
+                            className="products-feedback-close"
+                            aria-label="Dismiss message"
+                            onClick={() => setFavoriteMessage("")}
+                        >
+                            ×
+                        </button>
                     </div>
+                )}
 
-                    <p className="mt-3">Loading products...</p>
-                </div>
-            ) : products.length === 0 ? (
-                <div className="alert alert-info text-center">
-                    No products match your search or filters.
-                </div>
-            ) : (
-                /* Product Cards */
-                <div className="row g-4">
-                    {products.map((product) => {
-                        const isFavorite = favoriteIds.includes(product._id);
-                        const isUpdating = favoriteActionId === product._id;
+                {/* API error */}
+                {error && (
+                    <div
+                        className="products-feedback products-feedback-error"
+                        role="alert"
+                    >
+                        {error}
+                    </div>
+                )}
 
-                        return (
-                            <div
-                                className="col-md-6 col-lg-4"
-                                key={product._id}
-                            >
-                                <div className="card h-100 shadow-sm">
-                                    {/* Product Image */}
-                                    {product.images?.length > 0 ? (
-                                        <img
-                                            src={product.images[0]}
-                                            className="card-img-top"
-                                            alt={product.name}
-                                            style={{
-                                                height: "220px",
-                                                objectFit: "cover"
-                                            }}
-                                        />
-                                    ) : (
-                                        <div
-                                            className="bg-light d-flex align-items-center justify-content-center"
-                                            style={{ height: "220px" }}
-                                        >
-                                            <span className="text-muted">
-                                                No image available
+                {/* Results heading */}
+                {!loading && !error && products.length > 0 && (
+                    <div className="products-results-heading">
+                        <div>
+                            <span className="products-eyebrow">
+                                THE FARMERS' SELECTION
+                            </span>
+                            <h2>Available produce</h2>
+                        </div>
+
+                        <p>
+                            {products.length} {products.length === 1 ? "product" : "products"} found
+                        </p>
+                    </div>
+                )}
+
+                {/* Loading state */}
+                {loading ? (
+                    <div className="products-status" role="status">
+                        <div className="products-spinner" />
+                        <h2>Finding fresh produce...</h2>
+                        <p>Please wait while we load the marketplace.</p>
+                    </div>
+                ) : products.length === 0 ? (
+                    <div className="products-status products-empty-state">
+                        <span className="products-empty-icon" aria-hidden="true">
+                            🌱
+                        </span>
+                        <h2>No products found</h2>
+                        <p>
+                            Try another search or clear your filters to explore
+                            available produce.
+                        </p>
+                        <button
+                            type="button"
+                            className="products-btn products-btn-primary"
+                            onClick={handleClearFilters}
+                        >
+                            Clear all filters
+                        </button>
+                    </div>
+                ) : (
+                    <section
+                        className="products-grid"
+                        aria-label="Marketplace products"
+                    >
+                        {products.map((product) => {
+                            const isFavorite = favoriteIds.includes(product._id);
+                            const isUpdating =
+                                favoriteActionId === product._id;
+
+                            return (
+                                <article
+                                    className="products-card"
+                                    key={product._id}
+                                >
+                                    {/* Compact product card */}
+                                    <Link
+                                        to={`/products/${product._id}`}
+                                        className="products-image-link"
+                                        aria-label={`View ${product.name}`}
+                                    >
+                                        <div className="products-card-image">
+                                            {product.images?.length > 0 ? (
+                                                <img
+                                                    src={product.images[0]}
+                                                    alt={product.name}
+                                                    loading="lazy"
+                                                />
+                                            ) : (
+                                                <div className="products-image-placeholder">
+                                                    <span aria-hidden="true">🌿</span>
+                                                    <span>No photo yet</span>
+                                                </div>
+                                            )}
+                                            <span className="products-image-badge">
+                                                {product.category}
                                             </span>
                                         </div>
-                                    )}
+                                    </Link>
 
-                                    <div className="card-body d-flex flex-column">
-                                        {/* Category */}
-                                        <span className="badge bg-success align-self-start mb-2">
-                                            {product.category}
-                                        </span>
+                                    <div className="products-card-body">
+                                        <div className="products-card-topline">
+                                            <span className="products-category">
+                                                {product.category}
+                                            </span>
+                                            <span className="products-stock-label">
+                                                <span className="products-stock-dot" aria-hidden="true" />
+                                                In stock
+                                            </span>
+                                        </div>
 
-                                        {/* Product Name */}
-                                        <h5 className="card-title">
-                                            {product.name}
-                                        </h5>
+                                        <h3 className="products-card-title">
+                                            <Link to={`/products/${product._id}`}>
+                                                {product.name}
+                                            </Link>
+                                        </h3>
 
-                                        {/* Description */}
-                                        <p className="card-text text-muted">
+                                        <p className="products-description">
                                             {product.description}
                                         </p>
 
-                                        <div className="mt-auto">
-                                            {/* Price */}
-                                            <h5 className="text-success">
-                                                Rs. {product.price}
-                                                <small className="text-muted">
-                                                    {" "}/ {product.unit}
-                                                </small>
-                                            </h5>
+                                        <div className="products-price-row">
+                                            <p className="products-price">
+                                                Rs. {Number(product.price).toLocaleString()}
+                                                <small> / {product.unit}</small>
+                                            </p>
+                                        </div>
 
-                                            {/* Quantity */}
-                                            <p className="mb-3">
-                                                <strong>Available:</strong>{" "}
-                                                {product.quantity} {product.unit}
+                                        <p className="products-quantity">
+                                            <span aria-hidden="true">▦ </span>
+                                            <strong>{Number(product.quantity).toLocaleString()}</strong>{" "}
+                                            {product.unit} available
+                                        </p>
+
+                                        <div className="products-card-footer">
+                                            <p className="products-seller">
+                                                <span className="products-seller-icon" aria-hidden="true">♧</span>
+                                                <span>
+                                                    <small>Sold by</small>
+                                                    <strong>
+                                                        {product.seller?.name || "Local farmer"}
+                                                    </strong>
+                                                </span>
                                             </p>
 
-                                            {/* Seller */}
-                                            <p className="small text-muted">
-                                                Seller:{" "}
-                                                {product.seller?.name ||
-                                                    "Unknown seller"}
-                                            </p>
+                                            <div className="products-card-actions">
+                                                <button
+                                                    type="button"
+                                                    className={`products-favorite-btn ${
+                                                        isFavorite ? "is-favorite" : ""
+                                                    }`}
+                                                    onClick={() =>
+                                                        handleToggleFavorite(product._id)
+                                                    }
+                                                    disabled={
+                                                        favoritesLoading ||
+                                                        Boolean(favoriteActionId)
+                                                    }
+                                                    aria-label={
+                                                        isFavorite
+                                                            ? `Remove ${product.name} from favourites`
+                                                            : `Add ${product.name} to favourites`
+                                                    }
+                                                    title={
+                                                        isFavorite
+                                                            ? "Remove from favourites"
+                                                            : "Add to favourites"
+                                                    }
+                                                >
+                                                    {isUpdating ? "…" : isFavorite ? "♥" : "♡"}
+                                                </button>
 
-                                            {/* Favourite Button */}
-                                            <button
-                                                type="button"
-                                                className={`btn ${
-                                                    isFavorite
-                                                        ? "btn-danger"
-                                                        : "btn-outline-danger"
-                                                } w-100 mb-2`}
-                                                onClick={() =>
-                                                    handleToggleFavorite(product._id)
-                                                }
-                                                disabled={
-                                                    favoritesLoading ||
-                                                    Boolean(favoriteActionId)
-                                                }
-                                            >
-                                                {isUpdating
-                                                    ? "Updating..."
-                                                    : isFavorite
-                                                        ? "♥ Remove from Favourites"
-                                                        : "♡ Save to Favourites"}
-                                            </button>
-
-                                            {/* View Product */}
-                                            <Link
-                                                to={`/products/${product._id}`}
-                                                className="btn btn-success w-100"
-                                            >
-                                                View Product
-                                            </Link>
+                                                <Link
+                                                    to={`/products/${product._id}`}
+                                                    className="products-view-btn"
+                                                >
+                                                    View product <span aria-hidden="true">→</span>
+                                                </Link>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            )}
-        </div>
+                                </article>
+                            );
+                        })}
+                    </section>
+                )}
+            </div>
+        </main>
     );
 };
 
