@@ -1,194 +1,319 @@
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import "./AdminDashboard.css";
 
-function AdminDashboard() {
-    const { user, token } = useAuth();
-    const navigate = useNavigate();
+const statSections = [
+  {
+    title: "Users",
+    subtitle: "Manage your growing community",
+    icon: "♙",
+    color: "sage",
+    items: [
+      {
+        key: "total",
+        title: "Total Users",
+        description: "All registered accounts",
+      },
+      {
+        key: "active",
+        title: "Active Users",
+        description: "Approved accounts",
+      },
+      {
+        key: "pending",
+        title: "Pending Users",
+        description: "Awaiting admin approval",
+        highlight: true,
+      },
+    ],
+  },
+  {
+    title: "Products",
+    subtitle: "Monitor marketplace listings",
+    icon: "◇",
+    color: "olive",
+    items: [
+      {
+        key: "total",
+        title: "Total Products",
+        description: "All product listings",
+      },
+      {
+        key: "approved",
+        title: "Approved Products",
+        description: "Approved listings",
+      },
+      {
+        key: "pending",
+        title: "Pending Products",
+        description: "Awaiting review",
+        highlight: true,
+      },
+    ],
+  },
+  {
+    title: "Orders",
+    subtitle: "Track marketplace activity",
+    icon: "▤",
+    color: "gold",
+    items: [
+      {
+        key: "total",
+        title: "Total Orders",
+        description: "All marketplace orders",
+      },
+      {
+        key: "pending",
+        title: "Pending Orders",
+        description: "Awaiting further action",
+        highlight: true,
+      },
+      {
+        key: "completed",
+        title: "Completed Orders",
+        description: "Successfully completed",
+      },
+      {
+        key: "completedOrderValue",
+        title: "Completed Order Value",
+        description: "Combined value of completed orders",
+        currency: true,
+      },
+    ],
+  },
+];
 
-    const [stats, setStats] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+function StatCard({ item, value, index, color }) {
+  const isEmpty = value === 0 || value === "0";
 
-    useEffect(() => {
-        if (!token) {
-            navigate("/login");
-            return;
-        }
+  return (
+    <article
+      className={`admin-stat-card ${color || ""} ${
+        item.highlight ? "is-highlighted" : ""
+      }`}
+      style={{ "--card-index": index }}
+    >
+      <div className="stat-card-top">
+        <span className="stat-card-label">{item.title}</span>
 
-        if (user?.role !== "admin") {
-            navigate("/products");
-            return;
-        }
+        <span className="stat-card-indicator" aria-hidden="true">
+          {item.highlight ? "!" : "↗"}
+        </span>
+      </div>
 
-        const fetchStats = async () => {
-            try {
-                setLoading(true);
-                setError("");
+      <div className="stat-card-value">
+        {value ?? "—"}
+      </div>
 
-                const response = await api.get(
-                    "/admin/dashboard/stats",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`
-                        }
-                    }
-                );
-
-                setStats(response.data.stats);
-            } catch (err) {
-                setError(
-                    err.response?.data?.message ||
-                    "Failed to load dashboard statistics."
-                );
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchStats();
-    }, [token, user, navigate]);
-
-    const formatCurrency = (amount) =>
-        new Intl.NumberFormat("en-LK", {
-            style: "currency",
-            currency: "LKR",
-            maximumFractionDigits: 2
-        }).format(amount);
-
-    const StatCard = ({ title, value, description }) => (
-        <div className="col-md-6 col-xl-4 mb-4">
-            <div className="card h-100 border-0 shadow-sm">
-                <div className="card-body p-4">
-                    <p className="text-muted mb-2">{title}</p>
-                    <h3 className="fw-bold mb-2">{value}</h3>
-                    <small className="text-muted">{description}</small>
-                </div>
-            </div>
-        </div>
-    );
-
-    if (loading) {
-        return (
-            <div className="container py-5 text-center">
-                <div
-                    className="spinner-border text-success"
-                    role="status"
-                />
-                <p className="mt-3">Loading dashboard...</p>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="container py-5">
-                <div className="alert alert-danger">{error}</div>
-                <button
-                    className="btn btn-success"
-                    onClick={() => window.location.reload()}
-                >
-                    Try Again
-                </button>
-            </div>
-        );
-    }
-
-    if (!stats) {
-        return null;
-    }
-
-    return (
-        <div className="container-fluid px-3 px-md-5 py-4">
-            <div className="d-flex flex-wrap justify-content-between align-items-center mb-4">
-                <div>
-                    <h2 className="text-success mb-1">
-                        Admin Dashboard
-                    </h2>
-                    <p className="text-muted mb-0">
-                        Welcome back, {user?.name || "Admin"}.
-                        Here's your FarmLink overview.
-                    </p>
-                </div>
-
-                <button
-                    className="btn btn-outline-success mt-3 mt-md-0"
-                    onClick={() => window.location.reload()}
-                >
-                    Refresh Statistics
-                </button>
-            </div>
-
-            <h5 className="fw-bold mb-3">Users</h5>
-
-            <div className="row">
-                <StatCard
-                    title="Total Users"
-                    value={stats.users.total}
-                    description="All registered accounts"
-                />
-                <StatCard
-                    title="Active Users"
-                    value={stats.users.active}
-                    description="Approved accounts"
-                />
-                <StatCard
-                    title="Pending Users"
-                    value={stats.users.pending}
-                    description="Awaiting admin approval"
-                />
-            </div>
-
-            <h5 className="fw-bold mb-3">Products</h5>
-
-            <div className="row">
-                <StatCard
-                    title="Total Products"
-                    value={stats.products.total}
-                    description="All product listings"
-                />
-                <StatCard
-                    title="Approved Products"
-                    value={stats.products.approved}
-                    description="Available approved listings"
-                />
-                <StatCard
-                    title="Pending Products"
-                    value={stats.products.pending}
-                    description="Awaiting review"
-                />
-            </div>
-
-            <h5 className="fw-bold mb-3">Orders</h5>
-
-            <div className="row">
-                <StatCard
-                    title="Total Orders"
-                    value={stats.orders.total}
-                    description="All marketplace orders"
-                />
-                <StatCard
-                    title="Pending Orders"
-                    value={stats.orders.pending}
-                    description="Awaiting further action"
-                />
-                <StatCard
-                    title="Completed Orders"
-                    value={stats.orders.completed}
-                    description="Successfully completed orders"
-                />
-                <StatCard
-                    title="Completed Order Value"
-                    value={formatCurrency(
-                        stats.orders.completedOrderValue
-                    )}
-                    description="Combined value of completed orders"
-                />
-            </div>
-        </div>
-    );
+      <div className="stat-card-bottom">
+        <span
+          className={`stat-status-dot ${isEmpty ? "is-empty" : ""}`}
+          aria-hidden="true"
+        />
+        <span>{item.description}</span>
+      </div>
+    </article>
+  );
 }
 
-export default AdminDashboard; 
+function AdminDashboard() {
+  const { user, token } = useAuth();
+  const navigate = useNavigate();
+
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState("");
+
+  const fetchStats = useCallback(async (isRefresh = false) => {
+    if (isRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
+
+    setError("");
+
+    try {
+      const response = await api.get("/admin/dashboard/stats", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setStats(response.data.stats);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Failed to load dashboard statistics."
+      );
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    if (user?.role !== "admin") {
+      navigate("/products", { replace: true });
+      return;
+    }
+
+    fetchStats();
+  }, [token, user?.role, navigate, fetchStats]);
+
+  const formatCurrency = (amount) =>
+    new Intl.NumberFormat("en-LK", {
+      style: "currency",
+      currency: "LKR",
+      maximumFractionDigits: 2,
+    }).format(amount ?? 0);
+
+  const getValue = (sectionTitle, key) => {
+    if (!stats) return "—";
+
+    const sectionKey = sectionTitle.toLowerCase();
+    const value = stats[sectionKey]?.[key];
+
+    if (value === undefined || value === null) return "—";
+
+    if (sectionTitle === "Orders" && key === "completedOrderValue") {
+      return formatCurrency(value);
+    }
+
+    return new Intl.NumberFormat("en-LK").format(value);
+  };
+
+  if (!token || user?.role !== "admin") {
+    return (
+      <div className="admin-loading-screen">
+        <div className="admin-loader" />
+        <p>Preparing your dashboard...</p>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="admin-loading-screen">
+        <div className="admin-loader" />
+        <h3>Growing your overview</h3>
+        <p>Loading your FarmLink statistics...</p>
+      </div>
+    );
+  }
+
+  if (error && !stats) {
+    return (
+      <main className="admin-dashboard">
+        <div className="admin-error-card">
+          <span className="admin-error-icon">!</span>
+          <h2>Unable to load dashboard</h2>
+          <p>{error}</p>
+          <button
+            className="admin-primary-button"
+            onClick={() => fetchStats()}
+          >
+            Try again <span>↻</span>
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  if (!stats) return null;
+
+  return (
+    <main className="admin-dashboard">
+      <div className="admin-dashboard-inner">
+        <header className="admin-welcome">
+          <div className="admin-welcome-copy">
+
+            <h1>
+              Dashboard.
+            </h1>
+
+            <p>
+              Welcome back, {user?.name || "Admin"}. 
+            </p>
+          </div>
+
+          <button
+            className="admin-primary-button"
+            onClick={() => fetchStats(true)}
+            disabled={refreshing}
+          >
+            <span className={refreshing ? "admin-spinning" : ""}>
+              ↻
+            </span>
+            {refreshing ? "Refreshing..." : "Refresh statistics"}
+          </button>
+        </header>
+
+        {error && (
+          <div className="admin-inline-error" role="alert">
+            <span>{error}</span>
+            <button onClick={() => fetchStats(true)}>Retry</button>
+          </div>
+        )}
+
+        <section className="admin-overview-strip">
+          <div className="overview-message">
+            <div>
+              <strong>FarmLink at a glance</strong>
+              <p>Monitor users, listings, and orders in one place.</p>
+            </div>
+          </div>
+
+          <div className="overview-total">
+            <span>REGISTERED USERS</span>
+            <strong>{stats.users?.total ?? 0}</strong>
+          </div>
+        </section>
+
+        <div className="admin-stat-sections">
+          {statSections.map((section, sectionIndex) => (
+            <section
+              className="admin-stat-section"
+              key={section.title}
+              style={{ "--section-index": sectionIndex }}
+            >
+              <div className="admin-section-heading">
+                <div className={`admin-section-icon ${section.color}`}>
+                  {section.icon}
+                </div>
+
+                <div>
+                  <h2>{section.title}</h2>
+                  <p>{section.subtitle}</p>
+                </div>
+              </div>
+
+              <div className="admin-stat-grid">
+                {section.items.map((item, index) => (
+                  <StatCard
+                    key={item.key}
+                    item={item}
+                    value={getValue(section.title, item.key)}
+                    index={index}
+                    color={section.color}
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+export default AdminDashboard;

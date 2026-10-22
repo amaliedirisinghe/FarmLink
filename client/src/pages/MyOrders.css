@@ -1,0 +1,369 @@
+/* ==========================================================
+   FarmLink — My Orders
+   Save as: client/src/pages/MyOrders.css
+   Import in MyOrders.jsx: import "./MyOrders.css";
+   Matches the FarmLink forest-green, sage and warm-cream palette.
+   ========================================================== */
+
+:root {
+  --mo-green: #2e5639;
+  --mo-green-dark: #23452e;
+  --mo-green-bright: #3f784c;
+  --mo-green-soft: #edf3e8;
+  --mo-cream: #fbfaf5;
+  --mo-sage: #f1f5ed;
+  --mo-text: #29382c;
+  --mo-muted: #6e796d;
+  --mo-border: #dce5d7;
+  --mo-danger: #a83232;
+  --mo-danger-bg: #fff0ee;
+  --mo-warning: #855a0b;
+  --mo-warning-bg: #fff5d9;
+  --mo-blue: #315f91;
+  --mo-blue-bg: #eaf2fb;
+  --mo-shadow: 0 10px 28px rgba(39, 63, 42, .07);
+  --mo-shadow-hover: 0 16px 34px rgba(39, 63, 42, .11);
+}
+
+/* Page wrapper: JSX currently uses .container.py-5 */
+.container.py-5 {
+  max-width: 1440px;
+  padding: clamp(24px, 4vw, 54px) clamp(16px, 3vw, 40px) 64px !important;
+}
+
+/* Keep these styles scoped to the orders page by using the existing page structure.
+   Add className="my-orders-page" to the outer container for the safest targeting. */
+.container.py-5:has(.card) {
+  color: var(--mo-text);
+}
+
+.container.py-5:has(.card) h1.text-success,
+.container.py-5 h1.text-success {
+  margin: 0 0 9px;
+  color: var(--mo-green) !important;
+  font-size: clamp(2rem, 3.4vw, 2.8rem);
+  font-weight: 850;
+  letter-spacing: -.045em;
+  line-height: 1.1;
+}
+
+.container.py-5 .text-muted {
+  color: var(--mo-muted) !important;
+}
+
+/* Header */
+.container.py-5 > .d-flex.justify-content-between.align-items-center.mb-4 {
+  align-items: center !important;
+  gap: 20px;
+  padding: 0 0 24px;
+  margin-bottom: 30px !important;
+  border-bottom: 1px solid var(--mo-border);
+}
+
+.container.py-5 > .d-flex.justify-content-between.align-items-center.mb-4 p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.container.py-5 .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 750;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease,
+    background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+.container.py-5 .btn-success {
+  border: 1px solid var(--mo-green);
+  background: var(--mo-green);
+  color: #fff;
+  box-shadow: 0 5px 13px rgba(46, 86, 57, .12);
+}
+.container.py-5 .btn-success:hover,
+.container.py-5 .btn-success:focus-visible {
+  border-color: var(--mo-green-dark);
+  background: var(--mo-green-dark);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(35, 69, 46, .2);
+  transform: translateY(-2px);
+}
+.container.py-5 .btn-outline-danger {
+  border: 1px solid #e5b9b5;
+  background: #fff;
+  color: var(--mo-danger);
+}
+.container.py-5 .btn-outline-danger:hover:not(:disabled),
+.container.py-5 .btn-outline-danger:focus-visible:not(:disabled) {
+  border-color: var(--mo-danger);
+  background: var(--mo-danger);
+  color: #fff;
+  box-shadow: 0 6px 15px rgba(168, 50, 50, .14);
+  transform: translateY(-1px);
+}
+.container.py-5 .btn:active:not(:disabled) { transform: scale(.985); }
+.container.py-5 .btn:disabled { opacity: .62; cursor: not-allowed; }
+.container.py-5 .btn:focus-visible {
+  outline: 3px solid rgba(63, 120, 76, .24);
+  outline-offset: 3px;
+}
+.container.py-5 .btn-sm {
+  min-height: 38px;
+  padding: 8px 11px;
+  border-radius: 10px;
+  font-size: .84rem;
+}
+
+/* Order cards */
+.container.py-5 .row.g-4 {
+  --bs-gutter-x: 1.25rem;
+  --bs-gutter-y: 1.25rem;
+}
+.container.py-5 .row.g-4 > [class*="col-"] {
+  min-width: 0;
+}
+.container.py-5 .card.shadow-sm {
+  overflow: hidden;
+  border: 1px solid var(--mo-border) !important;
+  border-radius: 18px !important;
+  background: #fff;
+  box-shadow: var(--mo-shadow) !important;
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+  animation: mo-card-enter 420ms ease-out both;
+}
+.container.py-5 .row.g-4 > [class*="col-"]:nth-child(2) .card { animation-delay: 45ms; }
+.container.py-5 .row.g-4 > [class*="col-"]:nth-child(3) .card { animation-delay: 90ms; }
+.container.py-5 .row.g-4 > [class*="col-"]:nth-child(4) .card { animation-delay: 135ms; }
+.container.py-5 .row.g-4 > [class*="col-"]:nth-child(5) .card { animation-delay: 180ms; }
+.container.py-5 .card.shadow-sm:hover {
+  border-color: #c8d9c0 !important;
+  box-shadow: var(--mo-shadow-hover) !important;
+  transform: translateY(-2px);
+}
+.container.py-5 .card-body {
+  padding: clamp(18px, 2.5vw, 28px) !important;
+}
+@keyframes mo-card-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive order row and product title */
+.container.py-5 .card-body > .row.align-items-center {
+  row-gap: 6px;
+}
+.container.py-5 .card-body h5.mb-1 {
+  margin-bottom: 7px !important;
+  color: var(--mo-text);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.container.py-5 .card-body p.text-muted.mb-1 {
+  margin-bottom: 5px !important;
+  font-size: .91rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.container.py-5 .card-body small.text-muted {
+  font-size: .82rem;
+  line-height: 1.5;
+}
+
+/* Quantity and total columns */
+.container.py-5 .card-body .col-md-2 > small.d-block {
+  margin-bottom: 6px;
+  color: var(--mo-muted) !important;
+  font-size: .8rem;
+  font-weight: 650;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+}
+.container.py-5 .card-body .col-md-2 > strong {
+  display: inline-block;
+  color: var(--mo-text);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.container.py-5 .card-body .col-md-2 > strong.text-success {
+  color: var(--mo-green-bright) !important;
+  font-size: 1.1rem;
+  font-weight: 850;
+}
+
+/* Status badges mapped from getStatusClass() */
+.container.py-5 .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 29px;
+  max-width: 100%;
+  padding: 7px 11px;
+  border-radius: 999px;
+  font-size: .78rem;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.container.py-5 .badge.bg-warning {
+  background: var(--mo-warning-bg) !important;
+  color: var(--mo-warning) !important;
+}
+.container.py-5 .badge.bg-primary {
+  background: var(--mo-blue-bg) !important;
+  color: var(--mo-blue) !important;
+}
+.container.py-5 .badge.bg-success {
+  background: #e5f4e7 !important;
+  color: #27613a !important;
+}
+.container.py-5 .badge.bg-danger {
+  background: #fbe8e5 !important;
+  color: #963a32 !important;
+}
+.container.py-5 .badge.bg-secondary {
+  background: #ecefe9 !important;
+  color: #586457 !important;
+}
+
+/* Cancel action and action column */
+.container.py-5 .card-body .col-md-2:last-child {
+  display: flex;
+  align-items: center;
+}
+.container.py-5 .card-body .col-md-2:last-child .btn {
+  width: 100%;
+  white-space: normal;
+  line-height: 1.3;
+}
+
+/* Error message */
+.container.py-5 .alert.alert-danger {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 24px;
+  padding: 15px 17px;
+  border: 1px solid #efc6c2;
+  border-radius: 14px;
+  background: var(--mo-danger-bg);
+  color: var(--mo-danger);
+  box-shadow: none;
+  line-height: 1.55;
+  animation: mo-message-enter 320ms ease-out both;
+}
+.container.py-5 .alert.alert-danger::before {
+  content: "!";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f8d8d4;
+  color: var(--mo-danger);
+  font-weight: 850;
+}
+
+/* Empty orders state */
+.container.py-5 > .text-center.py-5 {
+  padding: clamp(38px, 6vw, 72px) 22px !important;
+  border: 1px dashed #cbdac4;
+  border-radius: 22px;
+  background: radial-gradient(circle at 50% 0%, rgba(226, 237, 218, .65), transparent 58%), #fff;
+  animation: mo-message-enter 420ms ease-out both;
+}
+.container.py-5 > .text-center.py-5 > .fs-1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 18px !important;
+  border-radius: 24px;
+  background: var(--mo-green-soft);
+  font-size: 2.25rem !important;
+}
+.container.py-5 > .text-center.py-5 h4 {
+  margin: 0 0 10px;
+  color: var(--mo-text);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+.container.py-5 > .text-center.py-5 p {
+  margin-bottom: 22px;
+  color: var(--mo-muted);
+  line-height: 1.65;
+}
+@keyframes mo-message-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Loading state */
+.container.py-5.text-center {
+  color: var(--mo-muted);
+}
+.container.py-5.text-center .spinner-border.text-success {
+  color: var(--mo-green) !important;
+}
+
+/* Tablet and mobile */
+@media (max-width: 767.98px) {
+  .container.py-5 {
+    padding: 28px 18px 44px !important;
+  }
+  .container.py-5 > .d-flex.justify-content-between.align-items-center.mb-4 {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 18px;
+    padding-bottom: 22px;
+  }
+  .container.py-5 > .d-flex.justify-content-between.align-items-center.mb-4 > a.btn {
+    width: 100%;
+  }
+  .container.py-5 .card-body .col-md-2:last-child {
+    align-items: flex-start;
+  }
+  .container.py-5 .card-body .col-md-2:last-child .btn {
+    max-width: 240px;
+  }
+}
+@media (max-width: 420px) {
+  .container.py-5 {
+    padding-right: 12px !important;
+    padding-left: 12px !important;
+  }
+  .container.py-5 h1.text-success { font-size: 2rem; }
+  .container.py-5 .card-body { padding: 17px !important; }
+}
+
+/* Accessibility: reduce motion when requested */
+@media (prefers-reduced-motion: reduce) {
+  .container.py-5 .card.shadow-sm,
+  .container.py-5 .alert,
+  .container.py-5 > .text-center.py-5 {
+    animation: none !important;
+  }
+  .container.py-5 *,
+  .container.py-5 *::before,
+  .container.py-5 *::after {
+    transition-duration: .01ms !important;
+  }
+  .container.py-5 .card.shadow-sm:hover,
+  .container.py-5 .btn:hover {
+    transform: none !important;
+  }
+}

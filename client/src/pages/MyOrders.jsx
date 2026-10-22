@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./MyOrders.css";
 
 const MyOrders = () => {
     const { token } = useAuth();
@@ -111,7 +112,7 @@ const MyOrders = () => {
     }
 
     return (
-        <div className="container py-5">
+        <div className="container py-5  my-orders-page">
 
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>

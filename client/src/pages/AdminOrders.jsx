@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import "./AdminOrders.css";
 
 function AdminOrders() {
     const { user, token } = useAuth();
@@ -54,19 +55,22 @@ function AdminOrders() {
             statusFilter === "all" ||
             order.status === statusFilter;
 
-        const searchText = search.trim().toLowerCase();
+        const query = search.trim().toLowerCase();
 
         const matchesSearch =
-            !searchText ||
-            order.product?.name?.toLowerCase().includes(searchText) ||
-            order.buyer?.name?.toLowerCase().includes(searchText) ||
-            order.buyer?.email?.toLowerCase().includes(searchText) ||
-            order.seller?.name?.toLowerCase().includes(searchText) ||
-            order.seller?.email?.toLowerCase().includes(searchText) ||
-            order._id?.toLowerCase().includes(searchText);
+            !query ||
+            order.product?.name?.toLowerCase().includes(query) ||
+            order.buyer?.name?.toLowerCase().includes(query) ||
+            order.buyer?.email?.toLowerCase().includes(query) ||
+            order.seller?.name?.toLowerCase().includes(query) ||
+            order.seller?.email?.toLowerCase().includes(query) ||
+            order._id?.toLowerCase().includes(query);
 
         return matchesStatus && matchesSearch;
     });
+
+    const countStatus = (status) =>
+        orders.filter((order) => order.status === status).length;
 
     const formatCurrency = (amount) =>
         `LKR ${Number(amount || 0).toLocaleString("en-LK", {
@@ -77,245 +81,260 @@ function AdminOrders() {
     const getStatusClass = (status) => {
         switch (status) {
             case "pending":
-                return "text-bg-warning";
+                return "ao-status-pending";
             case "confirmed":
-                return "text-bg-primary";
+                return "ao-status-confirmed";
             case "completed":
-                return "text-bg-success";
+                return "ao-status-completed";
             case "cancelled":
-                return "text-bg-danger";
+                return "ao-status-cancelled";
             default:
-                return "text-bg-secondary";
+                return "ao-status-default";
         }
     };
 
     return (
-        <div className="container-fluid px-3 px-md-5 py-4">
-            <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div className="admin-orders-page">
+
+            {/* Header */}
+            <div className="ao-header">
                 <div>
-                    <h2 className="text-success mb-1">
-                        Order Management
-                    </h2>
-                    <p className="text-muted mb-0">
-                        View and monitor all FarmLink marketplace orders.
+                    <h1>
+                        Order <span>management.</span>
+                    </h1>
+                    <p>
+                        View and monitor orders across the FarmLink marketplace.
                     </p>
                 </div>
 
-                <div className="d-flex gap-2">
+                <div className="ao-header-actions">
                     <button
-                        className="btn btn-outline-success"
+                        type="button"
+                        className="ao-btn ao-btn-light"
                         onClick={fetchOrders}
                         disabled={loading}
                     >
+                        <span className={loading ? "ao-refreshing" : ""}>
+                            ↻
+                        </span>
                         Refresh
                     </button>
 
-                    <Link to="/admin" className="btn btn-success">
-                        Dashboard
+                    <Link to="/admin" className="ao-btn ao-btn-dark">
+                        ← Dashboard
                     </Link>
                 </div>
             </div>
 
             {error && (
-                <div className="alert alert-danger" role="alert">
+                <div className="ao-alert" role="alert">
                     {error}
                 </div>
             )}
 
-            <div className="row g-3 mb-4">
-                <div className="col-6 col-lg-3">
-                    <div className="card border-0 shadow-sm h-100">
-                        <div className="card-body">
-                            <p className="text-muted mb-1">Total Orders</p>
-                            <h3 className="fw-bold mb-0">{orders.length}</h3>
-                        </div>
-                    </div>
-                </div>
+            {/* Overview Panel */}
+            <section className="ao-overview">
+                <div className="ao-overview-main">
+                    <div className="ao-overview-icon">↗</div>
 
-                <div className="col-6 col-lg-3">
-                    <div className="card border-0 shadow-sm h-100">
-                        <div className="card-body">
-                            <p className="text-muted mb-1">Pending</p>
-                            <h3 className="fw-bold text-warning mb-0">
-                                {orders.filter(
-                                    (order) => order.status === "pending"
-                                ).length}
-                            </h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="col-6 col-lg-3">
-                    <div className="card border-0 shadow-sm h-100">
-                        <div className="card-body">
-                            <p className="text-muted mb-1">Confirmed</p>
-                            <h3 className="fw-bold text-primary mb-0">
-                                {orders.filter(
-                                    (order) => order.status === "confirmed"
-                                ).length}
-                            </h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="col-6 col-lg-3">
-                    <div className="card border-0 shadow-sm h-100">
-                        <div className="card-body">
-                            <p className="text-muted mb-1">Completed</p>
-                            <h3 className="fw-bold text-success mb-0">
-                                {orders.filter(
-                                    (order) => order.status === "completed"
-                                ).length}
-                            </h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="card border-0 shadow-sm">
-                <div className="card-header bg-white py-3">
-                    <h5 className="mb-0">All Orders</h5>
-                </div>
-
-                <div className="card-body">
-                    <div className="row g-3 mb-4">
-                        <div className="col-md-8">
-                            <input
-                                type="search"
-                                className="form-control"
-                                placeholder="Search by product, buyer, seller, email or order ID..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="col-md-4">
-                            <select
-                                className="form-select"
-                                value={statusFilter}
-                                onChange={(e) =>
-                                    setStatusFilter(e.target.value)
-                                }
-                            >
-                                <option value="all">All statuses</option>
-                                <option value="pending">Pending</option>
-                                <option value="confirmed">Confirmed</option>
-                                <option value="completed">Completed</option>
-                                <option value="cancelled">Cancelled</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    {loading ? (
-                        <div className="text-center py-5">
-                            <div
-                                className="spinner-border text-success"
-                                role="status"
-                            />
-                            <p className="mt-2 mb-0">Loading orders...</p>
-                        </div>
-                    ) : filteredOrders.length === 0 ? (
-                        <div className="text-center py-5">
-                            <h5>No orders found</h5>
-                            <p className="text-muted mb-0">
-                                Try changing the search text or status filter.
-                            </p>
-                        </div>
-                    ) : (
-                        <div className="table-responsive">
-                            <table className="table table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Product</th>
-                                        <th>Buyer</th>
-                                        <th>Seller</th>
-                                        <th>Quantity</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
-                                        <th>Date</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {filteredOrders.map((order) => (
-                                        <tr key={order._id}>
-                                            <td>
-                                                <span
-                                                    className="font-monospace small"
-                                                    title={order._id}
-                                                >
-                                                    {order._id
-                                                        ? `#${order._id.slice(-6).toUpperCase()}`
-                                                        : "—"}
-                                                </span>
-                                            </td>
-
-                                            <td>
-                                                <div className="fw-semibold">
-                                                    {order.product?.name ||
-                                                        "Product unavailable"}
-                                                </div>
-                                                <small className="text-muted">
-                                                    {order.product?.category || ""}
-                                                </small>
-                                            </td>
-
-                                            <td>
-                                                <div>
-                                                    {order.buyer?.name || "—"}
-                                                </div>
-                                                <small className="text-muted">
-                                                    {order.buyer?.email || ""}
-                                                </small>
-                                            </td>
-
-                                            <td>
-                                                <div>
-                                                    {order.seller?.name || "—"}
-                                                </div>
-                                                <small className="text-muted">
-                                                    {order.seller?.email || ""}
-                                                </small>
-                                            </td>
-
-                                            <td>
-                                                {order.quantity} {order.unit}
-                                            </td>
-
-                                            <td className="fw-semibold">
-                                                {formatCurrency(order.totalAmount)}
-                                            </td>
-
-                                            <td>
-                                                <span
-                                                    className={`badge ${getStatusClass(order.status)}`}
-                                                >
-                                                    {order.status}
-                                                </span>
-                                            </td>
-
-                                            <td>
-                                                {order.createdAt
-                                                    ? new Date(
-                                                        order.createdAt
-                                                    ).toLocaleDateString()
-                                                    : "—"}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    )}
-
-                    {!loading && filteredOrders.length > 0 && (
-                        <p className="text-muted small mb-0 mt-3">
-                            Showing {filteredOrders.length} of {orders.length} orders.
+                    <div>
+                        <p className="ao-overview-label">Total marketplace orders</p>
+                        <h2>{orders.length}</h2>
+                        <p className="ao-overview-caption">
+                            Orders recorded in FarmLink
                         </p>
-                    )}
+                    </div>
                 </div>
-            </div>
+
+                <div className="ao-overview-stats">
+                    <div className="ao-mini-stat">
+                        <div>
+                            <strong>{countStatus("pending")}</strong>
+                            <span>Pending</span>
+                        </div>
+                    </div>
+
+                    <div className="ao-mini-stat">
+                        <div>
+                            <strong>{countStatus("confirmed")}</strong>
+                            <span>Confirmed</span>
+                        </div>
+                    </div>
+
+                    <div className="ao-mini-stat">
+                        <div>
+                            <strong>{countStatus("completed")}</strong>
+                            <span>Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Orders Table */}
+            <section className="ao-table-card">
+
+                <div className="ao-table-heading">
+                    <div>
+                        <h2>All orders</h2>
+                        <p>Review order details and current status.</p>
+                    </div>
+
+                    <div className="ao-search">
+                        <span>⌕</span>
+                        <input
+                            type="search"
+                            placeholder="Search orders..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            aria-label="Search by product, buyer, seller, email or order ID"
+                        />
+                    </div>
+                </div>
+
+                <div className="ao-filter-row">
+                    <div className="ao-filter-tabs">
+                        {[
+                            { value: "all", label: "All orders" },
+                            { value: "pending", label: "Pending" },
+                            { value: "confirmed", label: "Confirmed" },
+                            { value: "completed", label: "Completed" },
+                            { value: "cancelled", label: "Cancelled" }
+                        ].map((item) => (
+                            <button
+                                type="button"
+                                key={item.value}
+                                className={`ao-filter-tab ${
+                                    statusFilter === item.value ? "active" : ""
+                                }`}
+                                onClick={() => setStatusFilter(item.value)}
+                            >
+                                {item.label}
+                                {item.value === "all" && (
+                                    <span>{orders.length}</span>
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {loading ? (
+                    <div className="ao-state">
+                        <div className="ao-spinner" />
+                        <p>Loading orders...</p>
+                    </div>
+                ) : filteredOrders.length === 0 ? (
+                    <div className="ao-state">
+                        <div className="ao-empty-icon">⌕</div>
+                        <h3>No orders found</h3>
+                        <p>
+                            Try changing your search or selecting another status.
+                        </p>
+                    </div>
+                ) : (
+                    <div className="ao-table-scroll">
+                        <table className="ao-table">
+                            <thead>
+                                <tr>
+                                    <th>Order</th>
+                                    <th>Product</th>
+                                    <th>Buyer</th>
+                                    <th>Seller</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {filteredOrders.map((order) => (
+                                    <tr key={order._id}>
+                                        <td>
+                                            <span
+                                                className="ao-order-id"
+                                                title={order._id}
+                                            >
+                                                {order._id
+                                                    ? `#${order._id.slice(-6).toUpperCase()}`
+                                                    : "—"}
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            <div className="ao-primary-text">
+                                                {order.product?.name ||
+                                                    "Product unavailable"}
+                                            </div>
+                                            <small>
+                                                {order.product?.category || "—"}
+                                            </small>
+                                        </td>
+
+                                        <td>
+                                            <div className="ao-primary-text">
+                                                {order.buyer?.name || "—"}
+                                            </div>
+                                            <small>
+                                                {order.buyer?.email || ""}
+                                            </small>
+                                        </td>
+
+                                        <td>
+                                            <div className="ao-primary-text">
+                                                {order.seller?.name || "—"}
+                                            </div>
+                                            <small>
+                                                {order.seller?.email || ""}
+                                            </small>
+                                        </td>
+
+                                        <td className="ao-nowrap">
+                                            {order.quantity} {order.unit}
+                                        </td>
+
+                                        <td className="ao-amount">
+                                            {formatCurrency(order.totalAmount)}
+                                        </td>
+
+                                        <td>
+                                            <span
+                                                className={`ao-status ${getStatusClass(
+                                                    order.status
+                                                )}`}
+                                            >
+                                                <span className="ao-status-dot" />
+                                                {order.status || "Unknown"}
+                                            </span>
+                                        </td>
+
+                                        <td className="ao-nowrap">
+                                            {order.createdAt
+                                                ? new Date(
+                                                    order.createdAt
+                                                ).toLocaleDateString("en-US", {
+                                                    month: "short",
+                                                    day: "2-digit",
+                                                    year: "numeric"
+                                                })
+                                                : "—"}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
+
+                {!loading && filteredOrders.length > 0 && (
+                    <div className="ao-table-footer">
+                        <span>
+                            Showing <strong>{filteredOrders.length}</strong> of{" "}
+                            <strong>{orders.length}</strong> orders
+                        </span>
+                        <span>FarmLink · Order management</span>
+                    </div>
+                )}
+            </section>
         </div>
     );
 }

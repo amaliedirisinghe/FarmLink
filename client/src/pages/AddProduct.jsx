@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./AddProduct.css" ;
 
 const AddProduct = () => {
     const { token } = useAuth();
@@ -151,7 +152,7 @@ const AddProduct = () => {
     };
 
     return (
-        <div className="container py-5">
+        <div className="container py-5 add-product-page">
 
             <div className="row justify-content-center">
 

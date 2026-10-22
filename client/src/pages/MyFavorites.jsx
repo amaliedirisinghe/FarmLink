@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./MyFavorites.css";
 
 const MyFavorites = () => {
     const { token } = useAuth();
@@ -77,7 +78,7 @@ const MyFavorites = () => {
 
     if (loading) {
         return (
-            <div className="container py-5 text-center">
+            <div className="container py-5 text-center my-favorites-page favorites-loading">
                 <div
                     className="spinner-border text-success"
                     role="status"
@@ -90,12 +91,9 @@ const MyFavorites = () => {
     }
 
     return (
-        <div className="container py-5">
-            <div className="text-center mb-5">
+        <div className="container py-5 my-favorites-page">
+            <div className="text-center mb-5 ">
                 <h1 className="text-success">My Favourites</h1>
-                <p className="text-muted">
-                    Keep track of the fresh produce you love.
-                </p>
             </div>
 
             {error && (
@@ -117,7 +115,7 @@ const MyFavorites = () => {
             )}
 
             {!error && favorites.length === 0 ? (
-                <div className="text-center py-5">
+                <div className="text-center py-5 ">
                     <h4>No favourites yet</h4>
                     <p className="text-muted">
                         Browse the marketplace and save products you'd like

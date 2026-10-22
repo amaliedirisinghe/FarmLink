@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import "./AdminProducts.css";
 
 function AdminProducts() {
     const { user, token } = useAuth();
@@ -12,8 +13,9 @@ function AdminProducts() {
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [processingId, setProcessingId] = useState("");
+    const [search, setSearch] = useState("");
 
-    // Fetch products waiting for admin approval
+    // Fetch pending products — existing API
     const fetchPendingProducts = useCallback(async () => {
         try {
             setLoading(true);
@@ -39,7 +41,7 @@ function AdminProducts() {
         }
     }, [token]);
 
-    // Protect this page from unauthorized users
+    // Admin access protection
     useEffect(() => {
         if (!token) {
             navigate("/login");
@@ -54,7 +56,7 @@ function AdminProducts() {
         fetchPendingProducts();
     }, [token, user, navigate, fetchPendingProducts]);
 
-    // Approve a pending product
+    // Approve product — existing API
     const handleApprove = async (productId, productName) => {
         const confirmed = window.confirm(
             `Are you sure you want to approve "${productName}"?`
@@ -93,7 +95,7 @@ function AdminProducts() {
         }
     };
 
-    // Reject a pending product
+    // Reject product — existing API
     const handleReject = async (productId, productName) => {
         const confirmed = window.confirm(
             `Are you sure you want to reject "${productName}"?`
@@ -132,227 +134,320 @@ function AdminProducts() {
         }
     };
 
+    const filteredProducts = products.filter((product) => {
+        const query = search.trim().toLowerCase();
+
+        return (
+            !query ||
+            product.name?.toLowerCase().includes(query) ||
+            product.category?.toLowerCase().includes(query) ||
+            product.seller?.name?.toLowerCase().includes(query) ||
+            product.seller?.email?.toLowerCase().includes(query)
+        );
+    });
+
+    const formatPrice = (price) =>
+        Number(price || 0).toLocaleString("en-LK", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
     return (
-        <div className="container-fluid px-3 px-md-5 py-4">
+        <div className="admin-products-page">
 
             {/* Page Header */}
-            <div className="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+            <header className="ap-header">
                 <div>
-                    <h2 className="text-success mb-1">
-                        Product Management
-                    </h2>
-
-                    <p className="text-muted mb-0">
+                    <h1>
+                        Product <span>management.</span>
+                    </h1>
+                    <p>
                         Review product listings before they appear
                         in the marketplace.
                     </p>
                 </div>
 
-                <div className="d-flex gap-2">
+                <div className="ap-header-actions">
                     <button
-                        className="btn btn-outline-success"
+                        type="button"
+                        className="ap-btn ap-btn-light"
                         onClick={fetchPendingProducts}
                         disabled={loading || !!processingId}
                     >
+                        <span className={loading ? "ap-refreshing" : ""}>
+                            ↻
+                        </span>
                         Refresh
                     </button>
 
-                    <Link
-                        to="/admin"
-                        className="btn btn-success"
-                    >
-                        Dashboard
+                    <Link to="/admin" className="ap-btn ap-btn-dark">
+                        ← Dashboard
                     </Link>
                 </div>
-            </div>
+            </header>
 
-            {/* Error Message */}
+            {/* Feedback Messages */}
             {error && (
-                <div className="alert alert-danger" role="alert">
+                <div className="ap-alert ap-alert-error" role="alert">
+                    <span>!</span>
                     {error}
+                    <button
+                        type="button"
+                        onClick={() => setError("")}
+                        aria-label="Dismiss error"
+                    >
+                        ×
+                    </button>
                 </div>
             )}
 
-            {/* Success Message */}
             {message && (
-                <div className="alert alert-success" role="alert">
+                <div className="ap-alert ap-alert-success" role="status">
+                    <span>✓</span>
                     {message}
+                    <button
+                        type="button"
+                        onClick={() => setMessage("")}
+                        aria-label="Dismiss message"
+                    >
+                        ×
+                    </button>
                 </div>
             )}
+
+            {/* Overview Panel */}
+            <section className="ap-overview">
+                <div className="ap-overview-main">
+                    <div className="ap-overview-icon">◇</div>
+
+                    <div>
+                        <p className="ap-overview-label">
+                            Awaiting approval
+                        </p>
+                        <h2>{products.length}</h2>
+                        <p className="ap-overview-caption">
+                            Product listings awaiting review
+                        </p>
+                    </div>
+                </div>
+
+                <div className="ap-overview-note">
+                    <span className="ap-overview-dot" />
+                    Review each listing before approving
+                </div>
+            </section>
 
             {/* Pending Products */}
-            <div className="card border-0 shadow-sm">
-                <div className="card-header bg-white py-3">
-                    <h5 className="mb-0">
-                        Pending Products{" "}
-                        <span className="badge text-bg-warning">
-                            {products.length}
-                        </span>
-                    </h5>
+            <section className="ap-products-card">
+
+                <div className="ap-products-heading">
+                    <div>
+                        <h2>Pending products</h2>
+                        <p>
+                            Review product details and seller information.
+                        </p>
+                    </div>
+
+                    <div className="ap-search">
+                        <span>⌕</span>
+                        <input
+                            type="search"
+                            placeholder="Search products or sellers..."
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            aria-label="Search products or sellers"
+                        />
+                    </div>
                 </div>
 
-                <div className="card-body">
-                    {loading ? (
-                        <div className="text-center py-5">
-                            <div
-                                className="spinner-border text-success"
-                                role="status"
+                {!loading && products.length > 0 && (
+                    <div className="ap-products-meta">
+                        <span>
+                            {filteredProducts.length}{" "}
+                            {filteredProducts.length === 1
+                                ? "listing"
+                                : "listings"}
+                        </span>
+                        <span className="ap-pending-label">
+                            <span />
+                            Pending review
+                        </span>
+                    </div>
+                )}
+
+                {loading ? (
+                    <div className="ap-state">
+                        <div className="ap-spinner" />
+                        <p>Loading pending products...</p>
+                    </div>
+                ) : filteredProducts.length === 0 ? (
+                    <div className="ap-state">
+                        <div className="ap-empty-icon">◇</div>
+                        <h3>
+                            {products.length === 0
+                                ? "All caught up!"
+                                : "No products found"}
+                        </h3>
+                        <p>
+                            {products.length === 0
+                                ? "All product listings have been reviewed."
+                                : "Try another product name, category, or seller."}
+                        </p>
+                        {search && (
+                            <button
+                                type="button"
+                                className="ap-clear-search"
+                                onClick={() => setSearch("")}
                             >
-                                <span className="visually-hidden">
-                                    Loading...
-                                </span>
-                            </div>
+                                Clear search
+                            </button>
+                        )}
+                    </div>
+                ) : (
+                    <div className="ap-product-grid">
+                        {filteredProducts.map((product) => (
+                            <article
+                                className="ap-product-item"
+                                key={product._id}
+                            >
+                                {/* Product Image */}
+                                <div className="ap-product-image">
+                                    {product.images?.length > 0 ? (
+                                        <img
+                                            src={product.images[0]}
+                                            alt={product.name}
+                                            loading="lazy"
+                                        />
+                                    ) : (
+                                        <div className="ap-no-image">
+                                            <span>◇</span>
+                                            <p>No product image</p>
+                                        </div>
+                                    )}
 
-                            <p className="mt-2 mb-0">
-                                Loading pending products...
-                            </p>
-                        </div>
-                    ) : products.length === 0 ? (
-                        <div className="text-center py-5">
-                            <h5>No pending products</h5>
+                                    <span className="ap-image-status">
+                                        <span />
+                                        Pending
+                                    </span>
+                                </div>
 
-                            <p className="text-muted mb-0">
-                                All product listings have been reviewed.
-                            </p>
-                        </div>
-                    ) : (
-                        <div className="row">
-                            {products.map((product) => (
-                                <div
-                                    className="col-md-6 col-xl-4 mb-4"
-                                    key={product._id}
-                                >
-                                    <div className="card h-100 shadow-sm">
+                                {/* Product Details */}
+                                <div className="ap-product-body">
+                                    <p className="ap-product-category">
+                                        {product.category || "Uncategorized"}
+                                    </p>
 
-                                        {/* Product Image */}
-                                        {product.images?.length > 0 ? (
-                                            <img
-                                                src={product.images[0]}
-                                                className="card-img-top"
-                                                alt={product.name}
-                                                style={{
-                                                    height: "220px",
-                                                    objectFit: "cover"
-                                                }}
-                                            />
-                                        ) : (
-                                            <div
-                                                className="bg-light d-flex align-items-center justify-content-center"
-                                                style={{ height: "220px" }}
-                                            >
-                                                <span className="text-muted">
-                                                    No product image
-                                                </span>
-                                            </div>
-                                        )}
+                                    <h3>{product.name}</h3>
 
-                                        <div className="card-body d-flex flex-column">
+                                    <p className="ap-product-description">
+                                        {product.description ||
+                                            "No description provided."}
+                                    </p>
 
-                                            {/* Product Name and Status */}
-                                            <div className="d-flex justify-content-between align-items-start gap-2 mb-2">
-                                                <h5 className="card-title mb-0">
-                                                    {product.name}
-                                                </h5>
+                                    <div className="ap-product-price">
+                                        <strong>
+                                            LKR {formatPrice(product.price)}
+                                        </strong>
+                                        <span>/ {product.unit}</span>
+                                    </div>
 
-                                                <span className="badge text-bg-warning">
-                                                    Pending
-                                                </span>
-                                            </div>
+                                    <div className="ap-product-info">
+                                        <div>
+                                            <span>Available quantity</span>
+                                            <strong>
+                                                {product.quantity} {product.unit}
+                                            </strong>
+                                        </div>
 
-                                            {/* Category */}
-                                            <p className="text-muted small mb-2">
-                                                {product.category}
-                                            </p>
-
-                                            {/* Description */}
-                                            <p className="card-text">
-                                                {product.description}
-                                            </p>
-
-                                            {/* Price */}
-                                            <h5 className="text-success mb-3">
-                                                LKR{" "}
-                                                {Number(
-                                                    product.price
-                                                ).toLocaleString()}{" "}
-                                                / {product.unit}
-                                            </h5>
-
-                                            {/* Quantity */}
-                                            <p className="small mb-1">
-                                                <strong>Quantity:</strong>{" "}
-                                                {product.quantity}{" "}
-                                                {product.unit}
-                                            </p>
-
-                                            {/* Seller */}
-                                            <p className="small mb-1">
-                                                <strong>Seller:</strong>{" "}
-                                                {product.seller?.name ||
-                                                    "Unknown"}
-                                            </p>
-
-                                            <p className="small text-muted mb-3">
-                                                {product.seller?.email || ""}
-                                            </p>
-
-                                            {/* Submission Date */}
-                                            <p className="small text-muted">
-                                                Submitted:{" "}
+                                        <div>
+                                            <span>Submitted</span>
+                                            <strong>
                                                 {product.createdAt
                                                     ? new Date(
                                                         product.createdAt
-                                                    ).toLocaleDateString()
+                                                    ).toLocaleDateString(
+                                                        "en-US",
+                                                        {
+                                                            month: "short",
+                                                            day: "2-digit",
+                                                            year: "numeric"
+                                                        }
+                                                    )
                                                     : "—"}
-                                            </p>
-
-                                            {/* Approve and Reject Buttons */}
-                                            <div className="mt-auto d-flex gap-2">
-                                                <button
-                                                    className="btn btn-success flex-fill"
-                                                    disabled={
-                                                        !!processingId
-                                                    }
-                                                    onClick={() =>
-                                                        handleApprove(
-                                                            product._id,
-                                                            product.name
-                                                        )
-                                                    }
-                                                >
-                                                    {processingId ===
-                                                    product._id
-                                                        ? "Processing..."
-                                                        : "Approve"}
-                                                </button>
-
-                                                <button
-                                                    className="btn btn-outline-danger flex-fill"
-                                                    disabled={
-                                                        !!processingId
-                                                    }
-                                                    onClick={() =>
-                                                        handleReject(
-                                                            product._id,
-                                                            product.name
-                                                        )
-                                                    }
-                                                >
-                                                    {processingId ===
-                                                    product._id
-                                                        ? "Processing..."
-                                                        : "Reject"}
-                                                </button>
-                                            </div>
-
+                                            </strong>
                                         </div>
                                     </div>
+
+                                    <div className="ap-seller">
+                                        <div className="ap-seller-avatar">
+                                            {(
+                                                product.seller?.name || "?"
+                                            ).charAt(0).toUpperCase()}
+                                        </div>
+
+                                        <div className="ap-seller-details">
+                                            <span>Listed by</span>
+                                            <strong>
+                                                {product.seller?.name ||
+                                                    "Unknown seller"}
+                                            </strong>
+                                            <small>
+                                                {product.seller?.email || ""}
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    {/* Existing Approval Actions */}
+                                    <div className="ap-product-actions">
+                                        <button
+                                            type="button"
+                                            className="ap-btn ap-btn-approve"
+                                            disabled={!!processingId}
+                                            onClick={() =>
+                                                handleApprove(
+                                                    product._id,
+                                                    product.name
+                                                )
+                                            }
+                                        >
+                                            {processingId === product._id
+                                                ? "Processing..."
+                                                : "✓ Approve"}
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            className="ap-btn ap-btn-reject"
+                                            disabled={!!processingId}
+                                            onClick={() =>
+                                                handleReject(
+                                                    product._id,
+                                                    product.name
+                                                )
+                                            }
+                                        >
+                                            {processingId === product._id
+                                                ? "Processing..."
+                                                : "Reject"}
+                                        </button>
+                                    </div>
                                 </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
+                            </article>
+                        ))}
+                    </div>
+                )}
+
+                {!loading && filteredProducts.length > 0 && (
+                    <footer className="ap-products-footer">
+                        <span>
+                            Showing <strong>{filteredProducts.length}</strong>
+                            {" "}of <strong>{products.length}</strong> pending
+                            products
+                        </span>
+                        <span>FarmLink · Product review</span>
+                    </footer>
+                )}
+            </section>
         </div>
     );
 }

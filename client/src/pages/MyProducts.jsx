@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
+import "./MyProducts.css";
 
 const MyProducts = () => {
     const { token } = useAuth();
@@ -74,7 +75,7 @@ const MyProducts = () => {
     }
 
     return (
-        <div className="container py-5">
+        <div className="container py-5 my-products-page">
 
             {/* Page Header */}
             <div className="d-flex justify-content-between align-items-center mb-4">
@@ -83,10 +84,6 @@ const MyProducts = () => {
                     <h1 className="text-success">
                         My Products
                     </h1>
-
-                    <p className="text-muted mb-0">
-                        Manage the products you sell on FarmLink.
-                    </p>
                 </div>
 
                 <button

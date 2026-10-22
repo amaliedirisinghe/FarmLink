@@ -1,0 +1,468 @@
+/* =========================================================
+   FarmLink — My Products
+   Matches Product Details design tokens, motion & spacing
+   ========================================================= */
+
+:root {
+  --fd-green: #2e5639;
+  --fd-green-dark: #23452e;
+  --fd-green-soft: #edf3e8;
+  --fd-cream: #fbfaf5;
+  --fd-sage: #dce6d5;
+  --fd-text: #29382c;
+  --fd-muted: #687568;
+  --fd-border: #dce5d7;
+  --fd-danger: #a83232;
+  --fd-danger-bg: #fff0ee;
+  --fd-warning: #855a0b;
+  --fd-warning-bg: #fff7df;
+  --fd-success: #24613b;
+  --fd-success-bg: #eaf6ec;
+  --fd-shadow: 0 8px 22px rgba(39, 63, 42, .06);
+  --fd-radius: 16px;
+  --fd-gap: clamp(14px, 2vw, 28px);
+}
+
+/* ---------- Page shell ---------- */
+.my-products-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: clamp(12px, 2vw, 28px) clamp(12px, 3vw, 48px) clamp(28px, 4vw, 48px) !important;
+  background: var(--fd-cream);
+  color: var(--fd-text);
+  overflow-x: clip;
+  box-sizing: border-box;
+}
+
+.my-products-page *,
+.my-products-page *::before,
+.my-products-page *::after { box-sizing: border-box; }
+
+/* Constrain Bootstrap container inside our shell */
+.my-products-page.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---------- Page header ---------- */
+.my-products-page > .d-flex.justify-content-between {
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 22px !important;
+}
+
+.my-products-page h1 {
+  margin: 0 0 4px;
+  color: var(--fd-green);
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  font-weight: 850;
+  letter-spacing: -.03em;
+  line-height: 1.18;
+}
+
+.my-products-page h1 + p {
+  color: var(--fd-muted);
+  font-size: clamp(.9rem, 1vw, 1rem);
+  line-height: 1.5;
+}
+
+/* ---------- Primary button (Add Product) ---------- */
+.my-products-page .btn-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: var(--fd-green);
+  color: #fff;
+  font-weight: 800;
+  font-size: .95rem;
+  transition: background .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+
+.my-products-page .btn-success:hover,
+.my-products-page .btn-success:focus-visible {
+  background: var(--fd-green-dark);
+  box-shadow: 0 5px 12px rgba(35, 69, 46, .15);
+  transform: translateY(-1px);
+  color: #fff;
+}
+
+.my-products-page .btn-success:active {
+  transform: translateY(0) scale(.99);
+}
+
+.my-products-page .btn-success:focus-visible {
+  outline: 3px solid rgba(77, 132, 82, .35);
+  outline-offset: 2px;
+}
+
+/* ---------- Outline button (Manage) ---------- */
+.my-products-page .btn-outline-success {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 42px;
+  padding: 9px 14px;
+  border: 1px solid var(--fd-border);
+  border-radius: 11px;
+  background: #fff;
+  color: var(--fd-green);
+  font-weight: 750;
+  font-size: .9rem;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+}
+
+.my-products-page .btn-outline-success:hover,
+.my-products-page .btn-outline-success:focus-visible {
+  background: var(--fd-green-soft);
+  border-color: #afc5a7;
+  color: var(--fd-green-dark);
+  transform: translateY(-1px);
+}
+
+.my-products-page .btn-outline-success:active {
+  transform: translateY(0) scale(.99);
+}
+
+.my-products-page .btn-outline-success:focus-visible {
+  outline: 3px solid rgba(77, 132, 82, .35);
+  outline-offset: 2px;
+}
+
+/* ---------- Alerts ---------- */
+.my-products-page .alert-danger {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 11px 13px;
+  border: 1px solid #f0c7c3;
+  border-radius: 12px;
+  background: var(--fd-danger-bg);
+  color: var(--fd-danger);
+  font-size: .9rem;
+  line-height: 1.5;
+  animation: fd-alert-enter 380ms ease-out both;
+}
+
+@keyframes fd-alert-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Loading state ---------- */
+.my-products-page .spinner-border.text-success {
+  color: var(--fd-green) !important;
+  width: 2rem;
+  height: 2rem;
+}
+
+.my-products-page .container.py-5.text-center > p {
+  margin-top: 12px !important;
+  color: var(--fd-muted);
+  font-size: .95rem;
+}
+
+/* ---------- Empty state ---------- */
+.my-products-page .text-center.py-5 .fs-1 {
+  font-size: 2.75rem !important;
+  line-height: 1;
+  margin-bottom: 10px !important;
+}
+
+.my-products-page .text-center.py-5 h4 {
+  margin: 0 0 6px;
+  color: #29372b;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+.my-products-page .text-center.py-5 p.text-muted {
+  margin: 0 0 16px;
+  color: var(--fd-muted) !important;
+  font-size: .92rem;
+}
+
+/* ---------- Grid ---------- */
+.my-products-page .row.g-4 {
+  --bs-gutter-x: var(--fd-gap);
+  --bs-gutter-y: var(--fd-gap);
+  margin-left: calc(var(--bs-gutter-x) * -.5);
+  margin-right: calc(var(--bs-gutter-x) * -.5);
+}
+
+/* ---------- Product card ---------- */
+.my-products-page .card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--fd-border);
+  border-radius: var(--fd-radius);
+  background: #fff;
+  box-shadow: var(--fd-shadow);
+  overflow: hidden;
+  transition:
+    transform .22s ease,
+    box-shadow .22s ease,
+    border-color .22s ease;
+  animation: fd-card-enter 500ms cubic-bezier(.2, .75, .25, 1) both;
+}
+
+.my-products-page .card:hover {
+  border-color: #cbdcc4;
+  box-shadow: 0 16px 34px rgba(39, 63, 42, .1);
+  transform: translateY(-3px);
+}
+
+@keyframes fd-card-enter {
+  from { opacity: 0; transform: translateY(12px) scale(.99); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Stagger the cards — pure CSS, no JS needed */
+.my-products-page .row.g-4 > [class*="col-"]:nth-child(1) .card { animation-delay: 20ms; }
+.my-products-page .row.g-4 > [class*="col-"]:nth-child(2) .card { animation-delay: 70ms; }
+.my-products-page .row.g-4 > [class*="col-"]:nth-child(3) .card { animation-delay: 120ms; }
+.my-products-page .row.g-4 > [class*="col-"]:nth-child(4) .card { animation-delay: 170ms; }
+.my-products-page .row.g-4 > [class*="col-"]:nth-child(5) .card { animation-delay: 220ms; }
+.my-products-page .row.g-4 > [class*="col-"]:nth-child(6) .card { animation-delay: 270ms; }
+
+/* ---------- Product image ---------- */
+.my-products-page .card-img-top {
+  display: block;
+  width: 100%;
+  /* Override inline height:220px via aspect-ratio + height reset */
+  height: auto !important;
+  aspect-ratio: 4 / 3;
+  max-height: 240px;
+  object-fit: cover;
+  object-position: center;
+  background: #edf1e8;
+  transition: transform .35s ease;
+}
+
+.my-products-page .card:hover .card-img-top {
+  transform: scale(1.04);
+}
+
+/* Image wrapper — needed so the zoom stays inside the rounded frame */
+.my-products-page .card > div[style*="220px"],
+.my-products-page .card-img-top {
+  overflow: hidden;
+  border-top-left-radius: var(--fd-radius);
+  border-top-right-radius: var(--fd-radius);
+}
+
+/* Placeholder */
+.my-products-page .card > div.bg-light[style*="220px"] {
+  height: auto !important;
+  aspect-ratio: 4 / 3;
+  max-height: 240px;
+  background: linear-gradient(145deg, #eef3e8, #e1e9db) !important;
+  color: var(--fd-muted);
+  font-size: .88rem;
+  border-radius: 0;
+}
+
+/* ---------- Card body ---------- */
+.my-products-page .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  padding: clamp(12px, 1.5vw, 16px);
+}
+
+/* ---------- Badges (category + status) ---------- */
+.my-products-page .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 750;
+  line-height: 1.2;
+  letter-spacing: .01em;
+  text-transform: capitalize;
+}
+
+.my-products-page .badge.bg-success {
+  background: var(--fd-success-bg) !important;
+  color: var(--fd-success) !important;
+}
+
+.my-products-page .badge.bg-warning {
+  background: var(--fd-warning-bg) !important;
+  color: var(--fd-warning) !important;
+}
+
+.my-products-page .badge.bg-danger {
+  background: var(--fd-danger-bg) !important;
+  color: var(--fd-danger) !important;
+}
+
+.my-products-page .badge.bg-secondary {
+  background: #eeece5 !important;
+  color: #5c5b4d !important;
+}
+
+/* Status badge gets a dot for extra clarity */
+.my-products-page .badge.bg-success::before,
+.my-products-page .badge.bg-warning::before,
+.my-products-page .badge.bg-danger::before,
+.my-products-page .badge.bg-secondary::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: 0 0 6px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .85;
+}
+
+/* ---------- Title + description ---------- */
+.my-products-page .card-title {
+  margin: 8px 0 6px;
+  color: #29372b;
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+
+  /* Keep titles from pushing cards taller than others */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.my-products-page .card-text {
+  margin: 0 0 12px;
+  color: var(--fd-muted) !important;
+  font-size: .88rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- Price + availability ---------- */
+.my-products-page .card-body h5.text-success {
+  margin: 0 0 6px;
+  color: #39734a !important;
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  font-weight: 850;
+  letter-spacing: -.03em;
+  line-height: 1.2;
+}
+
+.my-products-page .card-body h5.text-success small {
+  color: var(--fd-muted) !important;
+  font-size: .78rem;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.my-products-page .card-body .mt-auto > p.mb-3 {
+  margin: 0 0 12px !important;
+  color: #4e5c50;
+  font-size: .84rem;
+  line-height: 1.4;
+}
+
+.my-products-page .card-body .mt-auto > p.mb-3 strong {
+  color: #2e3e30;
+  font-weight: 750;
+}
+
+/* ---------- Footer button spacing ---------- */
+.my-products-page .card-body .mt-auto .btn {
+  width: 100%;
+}
+
+/* ---------- Short viewports ---------- */
+@media (max-height: 640px) and (min-width: 761px) {
+  .my-products-page .card-img-top,
+  .my-products-page .card > div.bg-light[style*="220px"] {
+    max-height: 180px;
+  }
+  .my-products-page .card-body { padding: 12px; }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 960px) {
+  .my-products-page .card-img-top,
+  .my-products-page .card > div.bg-light[style*="220px"] {
+    max-height: 210px;
+  }
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 480px) {
+  .my-products-page {
+    padding: 10px 10px 24px !important;
+  }
+
+  .my-products-page > .d-flex.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .my-products-page > .d-flex.justify-content-between .btn-success {
+    width: 100%;
+  }
+
+  .my-products-page .card-img-top,
+  .my-products-page .card > div.bg-light[style*="220px"] {
+    aspect-ratio: 4 / 3;
+    max-height: 200px;
+  }
+
+  .my-products-page .card-body {
+    padding: 12px;
+  }
+
+  .my-products-page .card-title {
+    font-size: 1rem;
+  }
+
+  .my-products-page .card-text {
+    font-size: .84rem;
+  }
+
+  .my-products-page .btn-outline-success {
+    min-height: 40px;
+    font-size: .86rem;
+  }
+}
+
+/* ---------- Reduced motion (single consolidated block) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .my-products-page *,
+  .my-products-page *::before,
+  .my-products-page *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .my-products-page .card:hover,
+  .my-products-page .card:hover .card-img-top,
+  .my-products-page .btn-success:hover,
+  .my-products-page .btn-outline-success:hover {
+    transform: none;
+  }
+}

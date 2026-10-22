@@ -2,17 +2,19 @@
    FARMLINK MARKETPLACE
    ======================================== */
 
+
 .products-page {
     min-height: 100vh;
-    padding: 48px 24px 76px;
+    padding: 48px 4.75% 76px;
     background: var(--farmlink-background, #f7f9f5);
 }
 
 .products-container {
     width: 100%;
-    max-width: 1240px;
+    max-width: 1600px;
     margin: 0 auto;
 }
+
 
 /* Page heading */
 
@@ -74,7 +76,7 @@
     background-size: cover;
     background-position: center;
 
-    filter: blur(3px);
+    filter: blur(1px);
     opacity: 0.6;
 }
 
@@ -748,3 +750,293 @@
     }
 }
 
+
+.products-page {
+    animation: products-page-enter 650ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.products-header {
+    animation: products-header-enter 700ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.products-eyebrow {
+    animation: products-eyebrow-enter 650ms ease-out both;
+}
+
+.products-header h1 span {
+    display: inline-block;
+    background: linear-gradient(100deg, #527653 0%, #2f7046 48%, #82a66e 100%);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: products-title-shimmer 7s ease-in-out infinite;
+}
+
+/* Filter panel rises into view and gets a soft green glow on hover */
+.products-filter-panel {
+    animation: products-panel-enter 750ms 100ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+    transition: box-shadow 250ms ease, border-color 250ms ease, transform 250ms ease;
+}
+
+.products-filter-panel:hover {
+    border-color: rgba(82, 118, 83, 0.28);
+    box-shadow: 0 20px 48px rgba(35, 65, 42, 0.09);
+}
+
+.products-filter-panel::before {
+    transform: scale(1.025);
+    transition: transform 900ms ease, opacity 350ms ease;
+}
+
+.products-filter-panel:hover::before {
+    transform: scale(1.065);
+    opacity: 0.72;
+}
+
+/* Inputs respond smoothly to hover and focus */
+.products-filter-panel .form-control,
+.products-filter-panel .form-select {
+    transition:
+        border-color 200ms ease,
+        box-shadow 200ms ease,
+        background-color 200ms ease,
+        transform 200ms ease;
+}
+
+.products-filter-panel .form-control:focus,
+.products-filter-panel .form-select:focus {
+    transform: translateY(-1px);
+}
+
+/* Buttons have a tiny press response */
+.products-btn,
+.products-view-btn,
+.products-favorite-btn {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.products-btn:active,
+.products-view-btn:active {
+    transform: translateY(1px) scale(0.985);
+}
+
+.products-favorite-btn {
+    transition:
+        background-color 200ms ease,
+        border-color 200ms ease,
+        color 200ms ease,
+        transform 200ms cubic-bezier(0.2, 0.75, 0.25, 1),
+        box-shadow 200ms ease;
+}
+
+.products-favorite-btn:hover {
+    transform: translateY(-2px) scale(1.045);
+    box-shadow: 0 5px 12px rgba(163, 60, 60, 0.10);
+}
+
+.products-favorite-btn:active {
+    transform: scale(0.91);
+}
+
+.products-favorite-btn.is-favorite {
+    animation: products-heart-pop 360ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+/* Product cards enter with a staggered reveal */
+.products-card {
+    backface-visibility: hidden;
+    transform-origin: center bottom;
+    animation: products-card-reveal 600ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.products-card:nth-child(1)  { animation-delay: 40ms; }
+.products-card:nth-child(2)  { animation-delay: 90ms; }
+.products-card:nth-child(3)  { animation-delay: 140ms; }
+.products-card:nth-child(4)  { animation-delay: 190ms; }
+.products-card:nth-child(5)  { animation-delay: 240ms; }
+.products-card:nth-child(6)  { animation-delay: 290ms; }
+.products-card:nth-child(7)  { animation-delay: 340ms; }
+.products-card:nth-child(8)  { animation-delay: 390ms; }
+.products-card:nth-child(9)  { animation-delay: 440ms; }
+.products-card:nth-child(n+10) { animation-delay: 480ms; }
+
+.products-card {
+    transition:
+        transform 280ms cubic-bezier(0.2, 0.75, 0.25, 1),
+        box-shadow 280ms ease,
+        border-color 280ms ease;
+}
+
+.products-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 20px 42px rgba(30, 59, 38, 0.13);
+}
+
+/* Product image: gentle zoom and a subtle sheen on hover */
+.products-card-image {
+    isolation: isolate;
+}
+
+.products-card-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+        115deg,
+        transparent 15%,
+        rgba(255, 255, 255, 0.17) 45%,
+        transparent 72%
+    );
+    transform: translateX(-130%);
+    transition: transform 650ms ease;
+}
+
+.products-card:hover .products-card-image::after {
+    transform: translateX(130%);
+}
+
+.products-card-image img {
+    will-change: transform;
+    transition: transform 650ms cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.products-card:hover .products-card-image img {
+    transform: scale(1.075);
+}
+
+/* Category pill and stock indicator */
+.products-category {
+    transition: color 200ms ease, background-color 200ms ease, transform 200ms ease;
+}
+
+.products-card:hover .products-category {
+    background: #e2efdc;
+    transform: translateY(-1px);
+}
+
+.products-stock-dot {
+    box-shadow: 0 0 0 0 rgba(118, 167, 108, 0.35);
+    animation: products-stock-pulse 2.6s ease-out infinite;
+}
+
+/* Price subtly brightens when the product card is hovered */
+.products-price {
+    transition: color 220ms ease, transform 220ms ease;
+}
+
+.products-card:hover .products-price {
+    color: #214b31;
+    transform: translateX(2px);
+}
+
+/* Feedback and loading state */
+.products-feedback {
+    animation: products-feedback-enter 350ms ease-out both;
+}
+
+.products-status {
+    animation: products-status-enter 450ms ease-out both;
+}
+
+/* Keyframes */
+@keyframes products-page-enter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes products-header-enter {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes products-eyebrow-enter {
+    from { opacity: 0; transform: translateY(8px); letter-spacing: 0.22em; }
+    to { opacity: 1; transform: translateY(0); letter-spacing: 0.16em; }
+}
+
+@keyframes products-panel-enter {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes products-title-shimmer {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+
+@keyframes products-card-reveal {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.985);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes products-heart-pop {
+    0% { transform: scale(0.85); }
+    45% { transform: scale(1.16); }
+    75% { transform: scale(0.96); }
+    100% { transform: scale(1); }
+}
+
+@keyframes products-stock-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(118, 167, 108, 0.32); }
+    70% { box-shadow: 0 0 0 6px rgba(118, 167, 108, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(118, 167, 108, 0); }
+}
+
+@keyframes products-feedback-enter {
+    from { opacity: 0; transform: translateY(-7px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes products-status-enter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Respect accessibility preferences and avoid unnecessary motion */
+@media (prefers-reduced-motion: reduce) {
+    .products-page,
+    .products-header,
+    .products-eyebrow,
+    .products-header h1 span,
+    .products-filter-panel,
+    .products-card,
+    .products-feedback,
+    .products-status,
+    .products-favorite-btn.is-favorite,
+    .products-stock-dot {
+        animation: none !important;
+    }
+
+    .products-filter-panel,
+    .products-filter-panel::before,
+    .products-filter-panel .form-control,
+    .products-filter-panel .form-select,
+    .products-btn,
+    .products-view-btn,
+    .products-favorite-btn,
+    .products-card,
+    .products-card-image img,
+    .products-card-image::after,
+    .products-category,
+    .products-price {
+        transition: none !important;
+    }
+
+    .products-card:hover,
+    .products-card:hover .products-card-image img,
+    .products-card:hover .products-category,
+    .products-card:hover .products-price,
+    .products-filter-panel .form-control:focus,
+    .products-filter-panel .form-select:focus {
+        transform: none !important;
+    }
+}

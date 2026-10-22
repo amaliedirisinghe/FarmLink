@@ -5,6 +5,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 
+import "./ProductDetails.css";
+
 const ProductDetails = () => {
     const { productId } = useParams();
     const navigate = useNavigate();
@@ -164,252 +166,235 @@ const ProductDetails = () => {
 
     if (loading) {
         return (
-            <div className="container py-5 text-center">
-                <div
-                    className="spinner-border text-success"
-                    role="status"
-                >
-                    <span className="visually-hidden">
-                        Loading...
-                    </span>
+            <main className="product-details-page">
+                <div className="product-details-container product-details-state">
+                    <div className="product-details-spinner" role="status" aria-label="Loading product" />
+                    <p>Loading product...</p>
                 </div>
-
-                <p className="mt-3">
-                    Loading product...
-                </p>
-            </div>
+            </main>
         );
     }
 
     if (error && !product) {
         return (
-            <div className="container py-5">
-                <div className="alert alert-danger">
-                    {error}
+            <main className="product-details-page">
+                <div className="product-details-container">
+                    <div className="product-details-alert product-details-alert-error" role="alert">
+                        {error}
+                    </div>
+                    <Link to="/products" className="product-details-back">
+                        <span aria-hidden="true">←</span> Back to Marketplace
+                    </Link>
                 </div>
-
-                <Link
-                    to="/products"
-                    className="btn btn-success"
-                >
-                    Back to Marketplace
-                </Link>
-            </div>
+            </main>
         );
     }
 
-    if (!product) {
-        return null;
-    }
+    if (!product) return null;
 
-    const totalPrice =
-        Number(product.price) * Number(quantity || 0);
+    const totalPrice = Number(product.price) * Number(quantity || 0);
+    const isOutOfStock = Number(product.quantity) <= 0;
+
+    const categoryClass = {
+        Vegetables: "product-details-category-vegetables",
+        Fruits: "product-details-category-fruits",
+        Grains: "product-details-category-grains",
+        Dairy: "product-details-category-dairy",
+        Meat: "product-details-category-meat",
+        Other: "product-details-category-other",
+    }[product.category] || "product-details-category-other";
 
     return (
-        <div className="container py-5">
+        <main className="product-details-page">
+            <div className="product-details-container">
+                <Link to="/products" className="product-details-back">
+                    <span aria-hidden="true">←</span>
+                    Back to Marketplace
+                </Link>
 
-            <Link
-                to="/products"
-                className="btn btn-outline-success mb-4"
-            >
-                ← Back to Marketplace
-            </Link>
+                {error && (
+                    <div className="product-details-alert product-details-alert-error" role="alert">
+                        {error}
+                    </div>
+                )}
 
-            {error && (
-                <div className="alert alert-danger">
-                    {error}
-                </div>
-            )}
+                {success && (
+                    <div className="product-details-alert product-details-alert-success" role="status">
+                        <span className="product-details-alert-icon" aria-hidden="true">✓</span>
+                        <span>{success}</span>
+                    </div>
+                )}
 
-            {success && (
-                <div className="alert alert-success">
-                    {success}
-                </div>
-            )}
+                <section className="product-details-layout">
+                    {/* Product image */}
+                    <div className="product-details-media-column">
+                        <div className="product-details-image-wrap">
+                            {product.images?.length > 0 ? (
+                                <img
+                                    src={product.images[0]}
+                                    alt={product.name}
+                                    className="product-details-image"
+                                />
+                            ) : (
+                                <div className="product-details-image-placeholder">
+                                    <span className="product-details-placeholder-icon" aria-hidden="true">🌿</span>
+                                    <span>No image available</span>
+                                </div>
+                            )}
+                            
+                        </div>
+                    </div>
 
-            <div className="row g-5">
-
-                {/* Product Image */}
-                <div className="col-md-6">
-                    {product.images?.length > 0 ? (
-                        <img
-                            src={product.images[0]}
-                            alt={product.name}
-                            className="img-fluid rounded shadow-sm"
-                            style={{
-                                width: "100%",
-                                height: "450px",
-                                objectFit: "cover"
-                            }}
-                        />
-                    ) : (
-                        <div
-                            className="bg-light rounded d-flex align-items-center justify-content-center"
-                            style={{
-                                width: "100%",
-                                height: "450px"
-                            }}
-                        >
-                            <span className="text-muted fs-5">
-                                No image available
+                    {/* Product information */}
+                    <div className="product-details-info">
+                        <div className="product-details-category-row">
+                            <span className={`product-details-category ${categoryClass}`}>
+                                {product.category}
+                            </span>
+                            <span className={`product-details-stock ${isOutOfStock ? "is-out-of-stock" : "is-in-stock"}`}>
+                                <span className="product-details-stock-dot" />
+                                {isOutOfStock ? "Out of stock" : "Available"}
                             </span>
                         </div>
-                    )}
-                </div>
 
-                {/* Product Information */}
-                <div className="col-md-6">
+                        <h1 className="product-details-title">{product.name}</h1>
 
-                    <span className="badge bg-success mb-3">
-                        {product.category}
-                    </span>
+                        <p className="product-details-description">
+                            {product.description || "No description has been provided for this product."}
+                        </p>
 
-                    <h1 className="mb-3">
-                        {product.name}
-                    </h1>
-
-                    <p className="text-muted fs-5">
-                        {product.description}
-                    </p>
-
-                    <hr />
-
-                    <h2 className="text-success">
-                        Rs. {product.price}
-
-                        <small className="text-muted fs-5">
-                            {" "} / {product.unit}
-                        </small>
-                    </h2>
-
-                    <p className="mt-3">
-                        <strong>Seller:</strong>{" "}
-                        {product.seller?.name || "Unknown seller"}
-                    </p>
-
-                    <p>
-                        <strong>Available:</strong>{" "}
-                        {product.quantity} {product.unit}
-                    </p>
-
-                    {/* Own Product Message */}
-                    {isOwnProduct ? (
-                        <div className="alert alert-info mt-4">
-                            <strong>This is your product.</strong>
-
-                            <p className="mb-0 mt-2">
-                                You can manage this listing from My Products.
+                        <div className="product-details-price-block">
+                            <p className="product-details-price">
+                                Rs. {Number(product.price).toLocaleString("en-LK", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                })}
                             </p>
-
-                            <Link
-                                to="/my-products"
-                                className="btn btn-outline-success mt-3"
-                            >
-                                Manage My Products
-                            </Link>
+                            <span className="product-details-price-unit">per {product.unit}</span>
                         </div>
-                    ) : (
-                        <>
-                            {/* Quantity */}
-                            {product.quantity > 0 ? (
-                                <div className="mt-4">
 
-                                    <label className="form-label fw-bold">
-                                        Quantity ({product.unit})
-                                    </label>
+                        <hr className="product-details-divider" />
 
-                                    <div className="input-group mb-3">
+                        <div className="product-details-meta">
+                            <div className="product-details-meta-item">
+                                <span className="product-details-meta-icon" aria-hidden="true">♙</span>
+                                <span className="product-details-meta-copy">
+                                    <small>Sold by</small>
+                                    <strong>{product.seller?.name || "Unknown seller"}</strong>
+                                </span>
+                            </div>
+                            <div className="product-details-meta-item">
+                                <span className="product-details-meta-icon" aria-hidden="true">▦</span>
+                                <span className="product-details-meta-copy">
+                                    <small>Available quantity</small>
+                                    <strong>
+                                        {product.quantity} {product.unit}
+                                    </strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        {isOwnProduct ? (
+                            <div className="product-details-own-product">
+                                <strong>This is your product</strong>
+                                <p>You can manage this listing from My Products.</p>
+                                <Link to="/my-products" className="product-details-manage-btn">
+                                    Manage My Products <span aria-hidden="true">→</span>
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="product-details-purchase">
+                                {isOutOfStock ? (
+                                    <div className="product-details-out-of-stock-message">
+                                        <strong>Currently unavailable</strong>
+                                        <span>This product is out of stock. Please check back later.</span>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <label className="product-details-label" htmlFor="product-quantity">
+                                            Choose quantity
+                                            <span>({product.unit})</span>
+                                        </label>
+
+                                        <div className="product-details-quantity">
+                                            <button
+                                                type="button"
+                                                aria-label="Decrease quantity"
+                                                onClick={decreaseQuantity}
+                                                disabled={Number(quantity) <= quantityStep}
+                                            >
+                                                −
+                                            </button>
+
+                                            <input
+                                                id="product-quantity"
+                                                type="number"
+                                                value={quantity}
+                                                onChange={handleQuantityChange}
+                                                min={quantityStep}
+                                                max={product.quantity}
+                                                step="any"
+                                                aria-label={`Quantity in ${product.unit}`}
+                                            />
+
+                                            <button
+                                                type="button"
+                                                aria-label="Increase quantity"
+                                                onClick={increaseQuantity}
+                                                disabled={Number(quantity) >= product.quantity}
+                                            >
+                                                +
+                                            </button>
+                                        </div>
+
+                                        <div className="product-details-total">
+                                            <span className="product-details-total-label">
+                                                Order subtotal
+                                                <small>
+                                                    {quantity || 0} {product.unit} × Rs. {Number(product.price).toLocaleString("en-LK", {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2,
+                                                    })}
+                                                </small>
+                                            </span>
+                                            <strong>
+                                                Rs. {totalPrice.toLocaleString("en-LK", {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2,
+                                                })}
+                                            </strong>
+                                        </div>
 
                                         <button
                                             type="button"
-                                            className="btn btn-outline-success"
-                                            onClick={decreaseQuantity}
+                                            className="product-details-buy"
+                                            onClick={handleBuyNow}
                                             disabled={
-                                                Number(quantity) <= quantityStep
+                                                buying ||
+                                                !quantity ||
+                                                Number(quantity) <= 0 ||
+                                                Number(quantity) > product.quantity
                                             }
                                         >
-                                            −
+                                            {buying ? (
+                                                <>
+                                                    <span className="product-details-button-spinner" />
+                                                    Placing Order...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    Buy Now <span aria-hidden="true">→</span>
+                                                </>
+                                            )}
                                         </button>
-
-                                        <input
-                                            type="number"
-                                            className="form-control text-center"
-                                            value={quantity}
-                                            onChange={handleQuantityChange}
-                                            min={quantityStep}
-                                            max={product.quantity}
-                                            step="any"
-                                        />
-
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-success"
-                                            onClick={increaseQuantity}
-                                            disabled={
-                                                Number(quantity) >= product.quantity
-                                            }
-                                        >
-                                            +
-                                        </button>
-
-                                    </div>
-
-                                    <small className="text-muted">
-                                        You can enter a decimal quantity,
-                                        for example 0.5 kg.
-                                    </small>
-
-                                </div>
-                            ) : (
-                                <div className="alert alert-warning mt-4">
-                                    <strong>Out of Stock</strong>
-                                    <br />
-                                    This product is currently unavailable.
-                                </div>
-                            )}
-
-                            {/* Total */}
-                            {product.quantity > 0 && (
-                                <div className="bg-light rounded p-3 mb-4 mt-3">
-                                    <div className="d-flex justify-content-between">
-
-                                        <span>
-                                            {quantity || 0} × Rs.{" "}
-                                            {product.price}
-                                        </span>
-
-                                        <strong>
-                                            Rs. {totalPrice.toFixed(2)}
-                                        </strong>
-
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Buy Now */}
-                            {product.quantity > 0 && (
-                                <button
-                                    type="button"
-                                    className="btn btn-success btn-lg w-100"
-                                    onClick={handleBuyNow}
-                                    disabled={
-                                        buying ||
-                                        !quantity ||
-                                        Number(quantity) <= 0 ||
-                                        Number(quantity) > product.quantity
-                                    }
-                                >
-                                    {buying
-                                        ? "Placing Order..."
-                                        : "Buy Now"}
-                                </button>
-                            )}
-                        </>
-                    )}
-
-                </div>
+                                    </>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </section>
             </div>
-        </div>
+        </main>
     );
 };
 

@@ -1,0 +1,361 @@
+/* =========================================================
+   FarmLink — My Favourites
+   Theme: forest green, fresh sage, warm cream, soft gradients
+   Add `my-favorites-page` to the page's outer wrapper.
+   ========================================================= */
+
+.my-favorites-page {
+    --fl-forest: #174b35;
+    --fl-green: #24784c;
+    --fl-leaf: #3b9461;
+    --fl-sage: #e7f2e8;
+    --fl-cream: #fbfaf4;
+    --fl-ink: #20352a;
+    --fl-muted: #718078;
+    --fl-border: #e3ebe2;
+    --fl-danger: #b83e45;
+
+    min-height: 100vh;
+    padding-top: clamp(2rem, 5vw, 4rem) !important;
+    padding-bottom: clamp(3rem, 6vw, 5rem) !important;
+    color: var(--fl-ink);
+    background:
+        radial-gradient(ellipse at 8% 0%, rgba(199, 226, 196, 0.36), transparent 34rem),
+        radial-gradient(ellipse at 100% 18%, rgba(225, 238, 215, 0.48), transparent 30rem),
+        var(--fl-cream);
+    animation: favorites-page-enter 0.55s ease both;
+}
+
+/* Page heading */
+.my-favorites-page .favorites-heading {
+    max-width: 700px;
+    margin: 0 auto clamp(2rem, 4vw, 3rem);
+}
+
+.my-favorites-page .favorites-heading h1 {
+    margin-bottom: 0.7rem;
+    color: var(--fl-forest) !important;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 1.12;
+}
+
+.my-favorites-page .favorites-heading p {
+    margin: 0;
+    color: var(--fl-muted) !important;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+/* Product cards */
+.my-favorites-page .card {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    border: 1px solid rgba(216, 229, 216, 0.95);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 8px 24px rgba(28, 67, 44, 0.07) !important;
+    transition:
+        transform 0.28s ease,
+        box-shadow 0.28s ease,
+        border-color 0.28s ease;
+    animation: favorites-card-enter 0.5s ease both;
+}
+
+.my-favorites-page .card:hover {
+    transform: translateY(-7px);
+    border-color: #b7d6bb;
+    box-shadow: 0 18px 38px rgba(28, 67, 44, 0.14) !important;
+}
+
+.my-favorites-page .card-img-top {
+    display: block;
+    width: 100%;
+    height: 230px !important;
+    object-fit: cover;
+    background: #edf4eb;
+    transition: transform 0.55s ease;
+}
+
+.my-favorites-page .card:hover .card-img-top {
+    transform: scale(1.035);
+}
+
+.my-favorites-page .card > .bg-light {
+    min-height: 230px;
+    color: var(--fl-muted);
+    background: linear-gradient(135deg, #eef5eb, #f9f8ef) !important;
+}
+
+.my-favorites-page .card-body {
+    padding: 1.35rem;
+}
+
+.my-favorites-page .badge.bg-success {
+    padding: 0.48rem 0.75rem;
+    border: 1px solid #cfe6d0;
+    border-radius: 999px;
+    color: var(--fl-forest);
+    background: linear-gradient(135deg, #e5f4e5, #d4ebd6) !important;
+    font-size: 0.73rem;
+    font-weight: 750;
+    letter-spacing: 0.035em;
+    text-transform: capitalize;
+}
+
+.my-favorites-page .card-title {
+    margin: 0.15rem 0 0.55rem;
+    color: var(--fl-forest);
+    font-size: 1.28rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+}
+
+.my-favorites-page .card-body > p.text-muted:not(.small) {
+    display: -webkit-box;
+    min-height: 3rem;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    color: #6d7d72 !important;
+    font-size: 0.93rem;
+    line-height: 1.6;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.my-favorites-page .card-body h5.text-success {
+    margin: 0.15rem 0 0.9rem;
+    color: var(--fl-green) !important;
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.my-favorites-page .card-body p:not(.text-muted) {
+    color: #3f5547;
+    font-size: 0.92rem;
+}
+
+.my-favorites-page .card-body p strong {
+    color: var(--fl-forest);
+}
+
+.my-favorites-page .card-body .small.text-muted {
+    margin: 0.25rem 0 1rem;
+    color: var(--fl-muted) !important;
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+.my-favorites-page .text-danger {
+    color: var(--fl-danger) !important;
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+/* Buttons */
+.my-favorites-page .btn {
+    min-height: 45px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    border-radius: 12px;
+    font-size: 0.91rem;
+    font-weight: 700;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.my-favorites-page .btn-success {
+    border: 1px solid transparent;
+    color: #fff;
+    background: linear-gradient(135deg, #246b43, #32945b);
+    box-shadow: 0 6px 15px rgba(36, 107, 67, 0.18);
+}
+
+.my-favorites-page .btn-success:hover,
+.my-favorites-page .btn-success:focus-visible {
+    border-color: transparent;
+    color: #fff;
+    background: linear-gradient(135deg, #1b5636, #287c4b);
+    box-shadow: 0 9px 20px rgba(36, 107, 67, 0.26);
+    transform: translateY(-2px);
+}
+
+.my-favorites-page .btn-outline-danger {
+    border: 1px solid #e8c9c9;
+    color: #a9363e;
+    background: #fff;
+}
+
+.my-favorites-page .btn-outline-danger:hover,
+.my-favorites-page .btn-outline-danger:focus-visible {
+    border-color: #b83e45;
+    color: #fff;
+    background: linear-gradient(135deg, #b83e45, #d45d60);
+    box-shadow: 0 7px 16px rgba(184, 62, 69, 0.17);
+    transform: translateY(-1px);
+}
+
+.my-favorites-page .btn:disabled {
+    cursor: wait;
+    opacity: 0.65;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Empty state */
+.my-favorites-page .favorites-empty-state {
+    max-width: 620px;
+    margin: 1rem auto 0;
+    padding: clamp(2rem, 5vw, 3.5rem) 1.5rem;
+    border: 1px solid var(--fl-border);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow: 0 12px 32px rgba(28, 67, 44, 0.06);
+}
+
+.my-favorites-page .favorites-empty-state h4 {
+    margin-bottom: 0.7rem;
+    color: var(--fl-forest);
+    font-size: 1.45rem;
+    font-weight: 800;
+}
+
+.my-favorites-page .favorites-empty-state p {
+    max-width: 440px;
+    margin: 0 auto 1.5rem;
+    color: var(--fl-muted);
+    line-height: 1.7;
+}
+
+/* Feedback alerts */
+.my-favorites-page .alert {
+    border: 1px solid transparent;
+    border-radius: 14px;
+    padding: 0.95rem 1.1rem;
+    box-shadow: 0 5px 16px rgba(28, 67, 44, 0.045);
+}
+
+.my-favorites-page .alert-danger {
+    border-color: #f0d0d0;
+    color: #8f2f35;
+    background: linear-gradient(135deg, #fff5f4, #fffafa);
+}
+
+.my-favorites-page .alert-success {
+    border-color: #cce6d0;
+    color: #225b39;
+    background: linear-gradient(135deg, #eff9ef, #f8fcf6);
+}
+
+.my-favorites-page .alert a {
+    color: var(--fl-forest);
+    font-weight: 750;
+    text-underline-offset: 3px;
+}
+
+/* Loading state */
+.my-favorites-page.favorites-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 55vh;
+    text-align: center;
+}
+
+.my-favorites-page .spinner-border {
+    width: 2.7rem;
+    height: 2.7rem;
+    border-width: 0.24em;
+    color: var(--fl-green) !important;
+}
+
+.my-favorites-page .loading-copy {
+    margin-top: 1rem;
+    color: var(--fl-muted);
+    font-weight: 600;
+}
+
+/* Keyboard focus */
+.my-favorites-page a:focus-visible,
+.my-favorites-page button:focus-visible {
+    outline: 3px solid rgba(59, 148, 97, 0.35);
+    outline-offset: 3px;
+}
+
+/* Motion */
+@keyframes favorites-page-enter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes favorites-card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+    .my-favorites-page {
+        padding-top: 2rem !important;
+    }
+
+    .my-favorites-page .favorites-heading {
+        margin-bottom: 2rem;
+    }
+
+    .my-favorites-page .favorites-heading p {
+        font-size: 0.97rem;
+    }
+
+    .my-favorites-page .card {
+        border-radius: 18px;
+    }
+
+    .my-favorites-page .card-img-top,
+    .my-favorites-page .card > .bg-light {
+        height: 210px !important;
+        min-height: 210px;
+    }
+
+    .my-favorites-page .card-body {
+        padding: 1.1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .my-favorites-page,
+    .my-favorites-page .card {
+        animation: none;
+    }
+
+    .my-favorites-page .card,
+    .my-favorites-page .card-img-top,
+    .my-favorites-page .btn {
+        transition: none;
+    }
+
+    .my-favorites-page .card:hover,
+    .my-favorites-page .btn:hover {
+        transform: none;
+    }
+
+    .my-favorites-page .card:hover .card-img-top {
+        transform: none;
+    }
+}

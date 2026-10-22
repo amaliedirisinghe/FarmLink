@@ -1,0 +1,683 @@
+/* =========================================================
+   FarmLink — Register (fully responsive)
+   ========================================================= */
+
+.register-page {
+  --reg-green: #294b36;
+  --reg-green-light: #41694a;
+  --reg-sage: #789275;
+  --reg-cream: #f4f3e9;
+  --reg-white: #fffefa;
+  --reg-text: #29392d;
+  --reg-muted: #83897c;
+
+  min-height: 100vh;
+  padding: clamp(10px, 2.4vw, 26px) clamp(12px, 4vw, 70px) 12px;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse at 5% 10%, #dce5d0 0, transparent 36%),
+    var(--reg-cream);
+  color: var(--reg-text);
+  font-family: inherit;
+  overflow-x: clip;
+}
+
+.register-page *,
+.register-page *::before,
+.register-page *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Layout ---------- */
+.register-layout {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  /* No forced tall height — grows to content, caps at viewport */
+  min-height: min(650px, calc(100vh - 60px));
+  margin: 0 auto;
+  display: grid;
+  /* minmax(0, …) prevents overflow from long strings */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid #ffffffc9;
+  border-radius: clamp(20px, 2.4vw, 34px);
+  background: var(--reg-white);
+  box-shadow: 0 25px 80px #263d2912;
+}
+
+/* ---------- Left branding panel ---------- */
+.register-brand {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: clamp(26px, 4vw, 60px);
+  background: linear-gradient(150deg, #365d41 0%, #294b36 55%, #203e2d 100%);
+  color: var(--reg-white);
+  min-width: 0;
+}
+
+.register-brand-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 490px;
+  margin: 0 auto;
+  min-width: 0;
+  animation: registerFadeIn 0.7s ease both;
+}
+
+.register-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(8px, 1.4vw, 13px);
+  color: var(--reg-white);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 750;
+  letter-spacing: -1.2px;
+  text-decoration: none;
+}
+
+.register-logo-icon {
+  width: clamp(42px, 4.4vw, 54px);
+  height: clamp(42px, 4.4vw, 54px);
+  display: grid;
+  place-items: center;
+  border: 1px solid #ffffff35;
+  border-radius: clamp(13px, 1.4vw, 17px);
+  background: #ffffff13;
+  color: #d2e1b6;
+  font-size: clamp(22px, 2.6vw, 31px);
+  flex-shrink: 0;
+}
+
+.register-logo-accent {
+  color: #c3d7ad;
+}
+
+.register-brand-message {
+  margin-top: clamp(32px, 6vh, 95px);
+}
+
+.register-eyebrow,
+.register-form-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(10px, 1.05vw, 11px);
+  font-weight: 750;
+  letter-spacing: 2px;
+}
+
+.register-eyebrow {
+  color: #c9d9bb;
+}
+
+.register-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c9dda8;
+  box-shadow: 0 0 0 7px #ffffff0a;
+  flex-shrink: 0;
+}
+
+.register-brand-message h1 {
+  margin: clamp(16px, 2.6vh, 28px) 0 clamp(12px, 1.8vh, 20px);
+  font-size: clamp(30px, 4vw, 62px);
+  line-height: 1.08;
+  /* Tighter tracking scales down on small screens */
+  letter-spacing: clamp(-2.4px, -0.35vw, -1px);
+  font-weight: 760;
+  overflow-wrap: anywhere;
+}
+
+.register-brand-message h1 span {
+  color: #c6d9ad;
+}
+
+.register-brand-message > p {
+  max-width: 420px;
+  margin: 0;
+  color: #d0dbcf;
+  font-size: clamp(13px, 1.1vw, 15px);
+  line-height: 1.8;
+}
+
+.register-benefits {
+  display: grid;
+  gap: clamp(10px, 1.4vh, 17px);
+  margin-top: clamp(18px, 3vh, 35px);
+}
+
+.register-benefit {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #e0e8dc;
+  font-size: clamp(12px, 1.05vw, 13px);
+  line-height: 1.5;
+}
+
+.benefit-check {
+  width: 23px;
+  height: 23px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ffffff2b;
+  border-radius: 50%;
+  color: #d3e3b9;
+  font-size: 12px;
+}
+
+/* Decoration: constrain so it can't overlap content */
+.register-decoration {
+  position: absolute;
+  right: -12px;
+  bottom: -70px;
+  color: #ffffff08;
+  font-size: clamp(90px, 14vw, 190px);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -10px;
+  pointer-events: none;
+  user-select: none;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* ---------- Form section ---------- */
+.register-form-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 3.4vw, 38px) clamp(18px, 4vw, 80px);
+  background: var(--reg-white);
+  min-width: 0;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 470px;
+  margin: auto;
+  min-width: 0;
+  animation: registerSlideUp 0.65s ease both;
+}
+
+.register-heading {
+  margin-bottom: clamp(18px, 2.4vh, 26px);
+}
+
+.register-form-eyebrow {
+  margin-bottom: clamp(10px, 1.4vh, 17px);
+  color: var(--reg-sage);
+}
+
+.register-heading h2 {
+  margin: 0;
+  color: var(--reg-text);
+  font-size: clamp(26px, 3vw, 43px);
+  font-weight: 760;
+  line-height: 1.14;
+  letter-spacing: clamp(-1.6px, -0.28vw, -0.6px);
+  overflow-wrap: anywhere;
+}
+
+.register-heading h2 span {
+  color: #71886b;
+}
+
+.register-heading p {
+  margin: 10px 0 0;
+  color: var(--reg-muted);
+  font-size: clamp(13px, 1.05vw, 14px);
+  line-height: 1.55;
+}
+
+/* ---------- Alerts ---------- */
+.register-alert {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+  padding: 12px 14px;
+  border-radius: 11px;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  animation: registerFadeIn 0.35s ease both;
+}
+
+.register-alert-error {
+  border: 1px solid #efcbc5;
+  background: #fff1ef;
+  color: #a33c32;
+}
+
+.register-alert-success {
+  border: 1px solid #cfdfc5;
+  background: #eff6e9;
+  color: #315a37;
+}
+
+.register-alert small {
+  font-size: 11px;
+}
+
+/* ---------- Inputs ---------- */
+.register-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: clamp(12px, 1.6vh, 17px);
+}
+
+.register-field label {
+  color: #38473b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.register-field input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  /* Flexible height instead of fixed 49px */
+  height: clamp(44px, 3.4vh, 49px);
+  padding: 0 clamp(12px, 1.2vw, 16px);
+  border: 1px solid #e1e4da;
+  border-radius: 13px;
+  outline: none;
+  background: #fff;
+  color: var(--reg-text);
+  font-family: inherit;
+  /* 16px prevents iOS zoom-on-focus */
+  font-size: 16px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.register-field input::placeholder {
+  color: #a9afa4;
+  font-size: 14px;
+}
+
+.register-field input:focus {
+  border-color: #819b77;
+  background: #fffefa;
+  box-shadow: 0 0 0 4px #78927519;
+}
+
+/* ---------- Submit button ---------- */
+.register-submit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  min-height: clamp(46px, 3.6vh, 53px);
+  margin-top: 7px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 13px;
+  background: linear-gradient(105deg, #416b48, #294b36);
+  color: white;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  box-shadow: 0 9px 22px #294b3620;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.register-submit > span:last-child {
+  font-size: 22px;
+  font-weight: 400;
+  transition: transform 0.2s ease;
+}
+
+.register-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px #294b362e;
+}
+
+.register-submit:hover:not(:disabled) > span:last-child {
+  transform: translateX(4px);
+}
+
+.register-submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ---------- Security + login ---------- */
+.register-security {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 9px;
+  margin-top: clamp(14px, 2vh, 21px);
+  color: #858d7e;
+  font-size: 11px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.register-security > span {
+  color: #7e9974;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.register-login-prompt {
+  margin-top: clamp(14px, 2vh, 25px);
+  color: #82877c;
+  font-size: 12px;
+  text-align: center;
+}
+
+.register-login-prompt a {
+  color: #416b48;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.register-login-prompt a:hover {
+  color: #294b36;
+  text-decoration: underline;
+}
+
+/* ---------- Footer ---------- */
+.register-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 14px 6px 0;
+  color: #7e8578;
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Animations ---------- */
+@keyframes registerFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes registerSlideUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================
+   Breakpoints
+   ========================================================= */
+
+/* Large tablet / small laptop */
+@media (max-width: 1000px) {
+  .register-layout {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    min-height: min(620px, calc(100vh - 40px));
+  }
+
+  .register-brand-message h1 {
+    letter-spacing: -1.8px;
+  }
+}
+
+/* Tablet / phone: stack vertically */
+@media (max-width: 760px) {
+  .register-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+    /* Breathing room between brand and form */
+    gap: 0;
+    border-radius: 22px;
+  }
+
+  /* Brand becomes a compact header — form visible without scrolling */
+  .register-brand {
+    align-items: flex-start;
+    padding: 24px 22px 26px;
+  }
+
+  .register-brand-content {
+    max-width: 100%;
+  }
+
+  .register-brand-message {
+    margin-top: 22px;
+  }
+
+  .register-brand-message h1 {
+    margin: 14px 0 10px;
+    font-size: clamp(28px, 7vw, 40px);
+    letter-spacing: -1.4px;
+  }
+
+  .register-brand-message > p {
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 100%;
+  }
+
+  /* Hide benefit list + decoration on phone — too much vertical space */
+  .register-benefits {
+    margin-top: 16px;
+  }
+
+  .register-decoration {
+    font-size: 90px;
+    bottom: -30px;
+    right: -8px;
+    opacity: 0.6;
+  }
+
+  .register-form-section {
+    padding: 26px 22px 30px;
+    align-items: stretch;
+  }
+
+  .register-card {
+    max-width: 100%;
+  }
+
+  .register-heading {
+    margin-bottom: 18px;
+  }
+
+  .register-heading h2 {
+    font-size: clamp(26px, 6.4vw, 36px);
+    letter-spacing: -1.2px;
+  }
+}
+
+/* Phone */
+@media (max-width: 480px) {
+  .register-page {
+    padding: 10px 10px 8px;
+  }
+
+  .register-layout {
+    border-radius: 18px;
+  }
+
+  .register-brand {
+    padding: 20px 18px 22px;
+  }
+
+  .register-logo {
+    font-size: 22px;
+  }
+
+  .register-logo-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 22px;
+  }
+
+  .register-brand-message {
+    margin-top: 18px;
+  }
+
+  .register-brand-message h1 {
+    font-size: clamp(26px, 8vw, 34px);
+    letter-spacing: -1.2px;
+    margin: 12px 0 8px;
+  }
+
+  .register-brand-message > p {
+    font-size: 12.5px;
+    line-height: 1.65;
+  }
+
+  /* Keep only the first benefit visible to save vertical space */
+  .register-benefits .register-benefit:nth-child(n + 2) {
+    display: none;
+  }
+
+  .register-form-section {
+    padding: 22px 18px 26px;
+  }
+
+  .register-heading h2 {
+    font-size: clamp(24px, 7vw, 32px);
+    letter-spacing: -1px;
+  }
+
+  .register-heading p {
+    font-size: 12.5px;
+  }
+
+  .register-field input {
+    /* Keep 16px to avoid iOS zoom; heights already fluid */
+    padding: 0 12px;
+  }
+
+  .register-submit {
+    padding: 0 16px;
+    font-size: 12.5px;
+  }
+
+  .register-footer {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    font-size: 10.5px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 360px) {
+  .register-page {
+    padding: 8px 8px 6px;
+  }
+
+  .register-layout {
+    border-radius: 16px;
+  }
+
+  .register-brand {
+    padding: 18px 16px 20px;
+  }
+
+  .register-brand-message h1 {
+    font-size: 24px;
+    letter-spacing: -1px;
+  }
+
+  .register-form-section {
+    padding: 18px 14px 22px;
+  }
+
+  .register-heading h2 {
+    font-size: 22px;
+  }
+
+  .register-field input {
+    padding: 0 10px;
+    border-radius: 11px;
+  }
+
+  .register-submit {
+    padding: 0 14px;
+    border-radius: 11px;
+  }
+}
+
+/* Short screens — desktop/laptop landscape */
+@media (min-width: 761px) and (max-height: 780px) {
+  .register-page {
+    padding-top: 12px;
+    padding-bottom: 8px;
+  }
+
+  .register-layout {
+    min-height: min(590px, calc(100vh - 30px));
+  }
+
+  .register-brand-message {
+    margin-top: clamp(20px, 3vh, 42px);
+  }
+
+  .register-brand-message h1 {
+    margin: clamp(12px, 1.8vh, 20px) 0 clamp(8px, 1.2vh, 14px);
+  }
+
+  .register-benefits {
+    margin-top: clamp(12px, 2vh, 22px);
+    gap: 10px;
+  }
+
+  .register-form-section {
+    padding-top: clamp(18px, 2.4vh, 24px);
+    padding-bottom: clamp(18px, 2.4vh, 24px);
+  }
+
+  .register-field {
+    margin-bottom: clamp(8px, 1.2vh, 12px);
+  }
+
+  .register-heading {
+    margin-bottom: clamp(12px, 1.8vh, 20px);
+  }
+
+  .register-login-prompt {
+    margin-top: 14px;
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .register-page *,
+  .register-page *::before,
+  .register-page *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Also disable hover transforms */
+  .register-submit:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .register-submit:hover:not(:disabled) > span:last-child {
+    transform: none;
+  }
+}
