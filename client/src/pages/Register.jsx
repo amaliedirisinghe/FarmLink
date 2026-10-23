@@ -139,10 +139,6 @@ function Register() {
                 <br />
                 <span>FarmLink account.</span>
               </h2>
-
-              <p>
-                Join us and start growing together.
-              </p>
             </header>
 
             {error && (
@@ -233,11 +229,6 @@ function Register() {
                 {!loading && <span aria-hidden="true">→</span>}
               </button>
             </form>
-
-            <div className="register-security">
-              <span aria-hidden="true">◇</span>
-              Your account requires admin approval before activation.
-            </div>
 
             <div className="register-login-prompt">
               Already part of FarmLink?{" "}

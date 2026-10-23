@@ -1,13 +1,3 @@
-/* ==========================================================
-   FarmLink Seller Orders — Modern Forest / Sage / Cream Theme
-   Save as: client/src/pages/SellerOrders.css
-   Import in SellerOrders.jsx:
-   import "./SellerOrders.css";
-
-   Recommended: add className="seller-orders-page" to the page's
-   outermost wrapper for isolated styling.
-   ========================================================== */
-
 :root {
   --so-green: #2e5639;
   --so-green-dark: #23452e;

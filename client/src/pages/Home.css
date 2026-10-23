@@ -1,7 +1,5 @@
 
-/* ========================================
-   FARMLINK HOME — HERO SECTION
-   ======================================== */
+/*FARMLINK HOME — HERO SECTION */
 
 /* Page background and spacing */
 .home-page {
@@ -52,9 +50,7 @@
     z-index: 1;
 }
 
-/* ========================================
-   LEFT — HERO TEXT
-   ======================================== */
+/* LEFT — HERO TEXT */
 
 .home-hero-content {
     min-width: 0;
@@ -105,9 +101,7 @@
     line-height: 1.85;
 }
 
-/* ========================================
-   HERO BUTTONS
-   ======================================== */
+/*HERO BUTTONS*/
 
 .home-hero-actions {
     display: flex;

@@ -486,10 +486,6 @@
 }
 @keyframes fd-shimmer { to { transform: translateX(100%); } }
 
-/* =========================================================
-   Breakpoints — compact scaling
-   ========================================================= */
-
 /* Tablet */
 @media (max-width: 960px) {
   .product-details-layout { gap: 20px; }

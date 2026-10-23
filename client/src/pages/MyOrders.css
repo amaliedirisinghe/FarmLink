@@ -1,10 +1,3 @@
-/* ==========================================================
-   FarmLink — My Orders
-   Save as: client/src/pages/MyOrders.css
-   Import in MyOrders.jsx: import "./MyOrders.css";
-   Matches the FarmLink forest-green, sage and warm-cream palette.
-   ========================================================== */
-
 :root {
   --mo-green: #2e5639;
   --mo-green-dark: #23452e;
