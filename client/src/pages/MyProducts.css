@@ -335,7 +335,6 @@
 
   /* Keep titles from pushing cards taller than others */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -348,7 +347,6 @@
   overflow-wrap: anywhere;
 
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

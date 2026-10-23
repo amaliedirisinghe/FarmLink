@@ -117,7 +117,6 @@
     font-size: 0.93rem;
     line-height: 1.6;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
 }
 
 .my-favorites-page .card-body h5.text-success {
