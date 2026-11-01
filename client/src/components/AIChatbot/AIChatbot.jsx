@@ -1,8 +1,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import "./AIChatbot.css";
-
 
 function AIChatbot() {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,12 +18,16 @@ function AIChatbot() {
     ]);
 
     const messagesEndRef = useRef(null);
+    const inputRef = useRef(null);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({
-            behavior: "smooth"
-        });
-    }, [messages, isLoading]);
+        if (isOpen) {
+            messagesEndRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "end"
+            });
+        }
+    }, [messages, isLoading, isOpen]);
 
     const handleSendMessage = async (e) => {
         e.preventDefault();
@@ -63,18 +67,18 @@ function AIChatbot() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || "Something went wrong.");
+                throw new Error(
+                    data.message || "Something went wrong."
+                );
             }
-
-            const botMessage = {
-                id: Date.now() + 1,
-                text: data.reply,
-                sender: "bot"
-            };
 
             setMessages((previousMessages) => [
                 ...previousMessages,
-                botMessage
+                {
+                    id: Date.now() + 1,
+                    text: data.reply,
+                    sender: "bot"
+                }
             ]);
 
         } catch (error) {
@@ -97,23 +101,40 @@ function AIChatbot() {
     return (
         <div className="ai-chatbot-container">
 
+            {/* Floating Chat Button */}
             {!isOpen && (
                 <button
                     className="ai-chatbot-toggle"
                     onClick={() => setIsOpen(true)}
-                    aria-label="Open AI chatbot"
+                    aria-label="Open FarmLink Assistant"
                 >
-                    💬
+                    <span className="chat-icon">💬</span>
                 </button>
             )}
 
+            {/* Chat Window */}
             {isOpen && (
-                <div className="ai-chatbot-window">
+                <div
+                    className="ai-chatbot-window"
+                    role="dialog"
+                    aria-label="FarmLink Assistant"
+                >
 
+                    {/* Header */}
                     <div className="ai-chatbot-header">
-                        <div>
-                            <h3>FarmLink Assistant</h3>
-                            <p>Your smart farming marketplace assistant</p>
+
+                        <div className="ai-chatbot-brand">
+                            <div className="ai-chatbot-avatar">
+                                🌱
+                            </div>
+
+                            <div>
+                                <h3>FarmLink Assistant</h3>
+                                <p>
+                                    <span className="online-indicator"></span>
+                                    Your smart farming marketplace assistant
+                                </p>
+                            </div>
                         </div>
 
                         <button
@@ -123,26 +144,77 @@ function AIChatbot() {
                         >
                             ×
                         </button>
+
                     </div>
 
-                    <div className="ai-chatbot-messages">
+                    {/* Messages */}
+                    <div
+                        className="ai-chatbot-messages"
+                        aria-live="polite"
+                    >
+
+                        <div className="chat-date-label">
+                            FarmLink Assistant
+                        </div>
 
                         {messages.map((message) => (
                             <div
                                 key={message.id}
-                                className={`ai-chatbot-message ${
+                                className={`ai-chatbot-message-row ${
                                     message.sender === "user"
-                                        ? "user-message"
-                                        : "bot-message"
+                                        ? "user-row"
+                                        : "bot-row"
                                 }`}
                             >
-                                <ReactMarkdown>{message.text}</ReactMarkdown>
+                                {message.sender === "bot" && (
+                                    <div className="message-avatar">
+                                        🌱
+                                    </div>
+                                )}
+
+                                <div
+                                    className={`ai-chatbot-message ${
+                                        message.sender === "user"
+                                            ? "user-message"
+                                            : "bot-message"
+                                    }`}
+                                >
+                                    {message.sender === "bot" ? (
+                                        <ReactMarkdown
+                                            remarkPlugins={[remarkGfm]}
+                                            components={{
+                                                table: ({ children }) => (
+                                                    <div className="ai-chatbot-table-wrapper">
+                                                        <table>
+                                                            {children}
+                                                        </table>
+                                                    </div>
+                                                )
+                                            }}
+                                        >
+                                            {message.text}
+                                        </ReactMarkdown>
+                                    ) : (
+                                        message.text
+                                    )}
+                                </div>
                             </div>
                         ))}
 
+                        {/* Animated Typing Indicator */}
                         {isLoading && (
-                            <div className="ai-chatbot-message bot-message">
-                                FarmLink Assistant is typing...
+                            <div className="ai-chatbot-message-row bot-row">
+
+                                <div className="message-avatar">
+                                    🌱
+                                </div>
+
+                                <div className="typing-indicator">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+
                             </div>
                         )}
 
@@ -150,25 +222,37 @@ function AIChatbot() {
 
                     </div>
 
+                    {/* Input */}
                     <form
                         className="ai-chatbot-input-area"
                         onSubmit={handleSendMessage}
                     >
+
                         <input
+                            ref={inputRef}
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
-                            placeholder="Ask me something..."
+                            placeholder="Ask about products, prices..."
                             disabled={isLoading}
+                            maxLength={1000}
+                            aria-label="Type your message"
                         />
 
                         <button
                             type="submit"
                             disabled={isLoading || !input.trim()}
+                            aria-label="Send message"
                         >
-                            Send
+                            <span>Send</span>
+                            <span className="send-icon">➤</span>
                         </button>
+
                     </form>
+
+                    <div className="chatbot-footer">
+                        Powered by FarmLink AI
+                    </div>
 
                 </div>
             )}

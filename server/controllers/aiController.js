@@ -1,6 +1,7 @@
 
 import Groq from "groq-sdk";
-import Product from "../models/Product.js";
+import { getFilteredAIProducts } from "../services/aiProductService.js";
+import { extractProductFilters } from "../services/aiFilterService.js";
 
 const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY
@@ -28,28 +29,9 @@ const chatWithAI = async (req, res) => {
             });
         }
 
-        // Retrieve publicly available FarmLink products
-        const products = await Product.find({
-            status: "approved",
-            quantity: { $gt: 0 }
-        })
-            .select("name category description price quantity unit seller")
-            .populate("seller", "name")
-            .sort({ createdAt: -1 })
-            .limit(20)
-            .lean();
+        const filters = await extractProductFilters(message.trim());
 
-        // Prepare safe product information for the AI
-        const productContext = products.map((product) => ({
-            name: product.name,
-            category: product.category,
-            description: product.description,
-            price: product.price,
-            currency: "LKR",
-            quantity: product.quantity,
-            unit: product.unit,
-            seller: product.seller?.name || "FarmLink seller"
-        }));
+        const productContext = await getFilteredAIProducts(filters);
 
         const completion = await groq.chat.completions.create({
             model: "openai/gpt-oss-20b",
