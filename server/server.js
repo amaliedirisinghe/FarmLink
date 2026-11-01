@@ -12,6 +12,8 @@ import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import favoriteRoutes from "./routes/favoriteRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
+import aiProductRoutes from "./routes/aiProductRoutes.js";
 
 dotenv.config();
 
@@ -75,7 +77,12 @@ app.use("/api/uploads", uploadRoutes);
 // ==============================
 app.use("/api/favorites", favoriteRoutes);
 
+// ==============================
+// AI Chatbot Routes
+// ==============================
+app.use("/api/ai", aiRoutes);
 
+app.use("/api/ai", aiProductRoutes);
 
 // ==============================
 // Test Route

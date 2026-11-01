@@ -23,6 +23,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminUsers from "./pages/AdminUsers.jsx";
 import AdminProducts from "./pages/AdminProducts.jsx";
 import AdminOrders from "./pages/AdminOrders.jsx";
+import AIChatbot from "./components/AIChatbot/AIChatbot";
 
 function App() {
     return (
@@ -118,6 +119,7 @@ function App() {
 
             {/* Footer */}
             <Footer />
+              <AIChatbot />
         </BrowserRouter>
     );
 }
